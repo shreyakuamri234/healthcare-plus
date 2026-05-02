@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'pharmacy_project.wsgi.application'
 import dj_database_url
 import os
 
-# Purana DATABASES = {...} wala block hata kar ye likhein
+# ... baaki settings ...
+
 DATABASES = {
     'default': dj_database_url.config(
-        # Render par ye DATABASE_URL apne aap mil jayegi
-        default=os.environ.get('DATABASE_URL'),
+        default=os.environ.get('DATABASE_URL', f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"),
         conn_max_age=600
     )
 }
