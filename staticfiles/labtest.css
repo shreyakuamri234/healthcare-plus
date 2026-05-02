@@ -1,0 +1,129 @@
+  /* ================= RESET & BASE ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; scroll-behavior: smooth; }
+        
+        :root {
+            --primary-dark: #0d3b36;
+            --primary-teal: #0b6b5c;
+            --accent-mint: #d1f0ea;
+            --text-gray: #718096;
+            --bg-light: #f8fafb;
+            --accent-yellow: #ffb400;
+            --danger-red: #e53e3e;
+            --white: #ffffff;
+        }
+
+        body { background-color: var(--bg-light); color: #333; }
+
+        /* ================= HEADER ================= */
+        .top-header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 0 40px; 
+            background: var(--white); 
+            border-bottom: 1px solid #eee;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .left { display: flex; align-items: center; gap: 15px; }
+        .logo { cursor: pointer; font-weight: 800; font-size: 24px; color: var(--primary-teal); letter-spacing: -1px; }
+        .logo span { color: #e53e3e; } 
+        
+        .location-box { cursor: pointer; border-left: 1px solid #ddd; padding-left: 15px; display: flex; flex-direction: column; justify-content: center; }
+        .location-box span { font-size: 10px; color: gray; text-transform: uppercase; letter-spacing: 0.5px; }
+        .location-box p { font-weight: bold; font-size: 13px; color: var(--primary-teal); }
+
+        .right { display: flex; align-items: center; gap: 25px; }
+        .cart-wrapper { position: relative; cursor: pointer; font-size: 22px; }
+        .cart-count { 
+            position: absolute; top: -5px; right: -8px; background: var(--danger-red); 
+            color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
+        }
+
+        .login-btn {
+            padding: 7px 18px; border: 1px solid var(--primary-teal); background: var(--white);
+            border-radius: 6px; cursor: pointer; color: var(--primary-teal); font-weight: 600; font-size: 14px; transition: 0.3s;
+        }
+        .login-btn:hover { background: var(--primary-teal); color: var(--white); }
+
+        /* ================= NAVIGATION ================= */
+        .main-nav {
+            display: flex; gap: 30px; padding: 10px 40px; justify-content: center;
+            background: var(--white); border-bottom: 1px solid #eee;
+        }
+        .main-nav a { text-decoration: none; color: #333; font-size: 14px; font-weight: 600; transition: 0.2s; position: relative; }
+        .main-nav a:hover { color: var(--primary-teal); }
+        .main-nav .active { color: var(--primary-teal); }
+        .main-nav .active::after {
+            content: ""; position: absolute; bottom: -11px; left: 0; width: 100%; height: 3px; background: var(--primary-teal);
+        }
+
+        /* ================= LAB HERO ================= */
+        .lab-hero {
+            background: var(--primary-dark); padding: 50px 20px; color: white; text-align: center;
+            background-image: linear-gradient(rgba(13, 59, 54, 0.8), rgba(13, 59, 54, 0.8)), url('https://images.unsplash.com/photo-1579152276506-44b4137ff04d?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover; background-position: center;
+        }
+        .lab-hero h1 { font-size: 32px; margin-bottom: 8px; }
+        .lab-search {
+            background: white; display: flex; max-width: 650px; margin: 20px auto 0;
+            border-radius: 10px; padding: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .lab-search input { flex: 1; border: none; outline: none; padding: 0 15px; font-size: 15px; color: #333; }
+        .lab-search button { background: var(--primary-teal); color: white; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+        /* ================= CONTENT LAYOUT ================= */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 40px; }
+        .section-header { margin-bottom: 20px; border-left: 5px solid var(--primary-teal); padding-left: 15px; }
+
+        .concern-grid { display: flex; gap: 15px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .concern-item {
+            flex: 0 0 130px; background: white; padding: 18px; text-align: center; border-radius: 15px;
+            border: 1px solid #e2e8f0; cursor: pointer; transition: 0.3s;
+        }
+        .concern-item:hover, .concern-item.active-cat { border-color: var(--primary-teal); background: var(--accent-mint); transform: translateY(-3px); }
+        .concern-item span { font-size: 28px; display: block; margin-bottom: 8px; }
+        .concern-item p { font-size: 13px; font-weight: 600; color: var(--primary-dark); }
+
+        .main-layout { display: grid; grid-template-columns: 1fr 320px; gap: 30px; }
+
+        .lab-package-card {
+            background: white; border: 1px solid #eee; border-radius: 15px; margin-bottom: 20px;
+            padding: 25px; display: flex; justify-content: space-between; align-items: center;
+            transition: 0.2s;
+        }
+        .lab-package-card:hover { border-color: var(--primary-teal); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .parameters { color: var(--primary-teal); font-weight: 700; font-size: 13px; margin: 8px 0; background: var(--accent-mint); display: inline-block; padding: 2px 8px; border-radius: 4px; }
+        .test-preview { list-style: none; font-size: 13px; color: var(--text-gray); margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .test-preview li { display: flex; align-items: center; gap: 5px; }
+
+        .package-pricing { text-align: right; min-width: 160px; padding-left: 20px; border-left: 1px solid #f0f0f0; }
+        .current-price { font-size: 24px; font-weight: 800; color: var(--primary-dark); display: block; margin-bottom: 5px; }
+        .original-price { text-decoration: line-through; color: #a0aec0; font-size: 14px; }
+        
+        .add-btn {
+            background: var(--accent-yellow); color: var(--primary-dark); border: none; 
+            padding: 12px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; width: 100%;
+            text-transform: uppercase; font-size: 12px; transition: 0.3s;
+        }
+        .add-btn:hover { background: #e5a100; transform: scale(1.02); }
+
+        /* ================= CART SIDEBAR ================= */
+        .cart-sidebar { background: white; border: 1px solid #eee; border-radius: 15px; padding: 25px; position: sticky; top: 90px; height: fit-content; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .cart-header { font-weight: 800; font-size: 18px; color: var(--primary-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .cart-item { font-size: 14px; display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #eee; }
+        .cart-total { margin-top: 20px; font-weight: 800; border-top: 2px solid #f0f0f0; padding-top: 15px; display: flex; justify-content: space-between; font-size: 18px; color: var(--primary-teal); }
+        .checkout-btn { width: 100%; background: var(--primary-teal); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 700; margin-top: 20px; cursor: pointer; transition: 0.3s; }
+        .checkout-btn:hover { background: #085247; }
+
+        /* ================= FOOTER ================= */
+        footer { background: var(--primary-dark); color: white; padding: 60px 40px 30px; margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
+        .footer-col h4 { color: var(--accent-yellow); margin-bottom: 20px; font-size: 18px; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { color: #d1f0ea; font-size: 14px; margin-bottom: 10px; cursor: pointer; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #1a4a44; margin-top: 40px; font-size: 13px; color: #8eb1ad; }
+    
