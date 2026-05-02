@@ -4,3 +4,4 @@ gunicorn
 psycopg2-binary
 razorpay
 dj-database-url
+google-generativeai
