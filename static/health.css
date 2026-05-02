@@ -1,0 +1,122 @@
+ /* ================= RESET & BASE ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; scroll-behavior: smooth; }
+        
+        :root {
+            --primary-dark: #0d3b36;
+            --primary-teal: #0b6b5c;
+            --accent-mint: #d1f0ea;
+            --text-gray: #718096;
+            --bg-light: #f8fafb;
+            --border: #e2e8f0;
+            --accent-yellow: #ffb400;
+        }
+
+        body { background-color: var(--bg-light); color: #333; line-height: 1.6; }
+
+        /* ================= HEADER (Matched to Index) ================= */
+        .top-header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 10px 40px; 
+            background: #fff; 
+            border-bottom: 1px solid #eee;
+        }
+
+        .left { display: flex; align-items: center; gap: 15px; }
+        
+        /* LOGO STYLING FROM INDEX */
+        .logo-text { 
+            font-size: 22px; 
+            font-weight: 800; 
+            color: #0b6b5c; 
+            letter-spacing: -1px; 
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .logo-text span { color: #e53e3e; margin-left: 2px; font-size: 26px; }
+        
+        .location-box { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .loc-pin { font-size: 18px; color: #333; }
+        .location-box span { font-size: 11px; color: gray; display: block; }
+        .location-box p { font-weight: bold; font-size: 13px; color: var(--primary-teal); }
+
+        .right { display: flex; align-items: center; gap: 20px; }
+        
+        .cart-wrapper { position: relative; cursor: pointer; font-size: 22px; }
+        .cart-count { 
+            position: absolute; top: -5px; right: -8px; background: #e53e3e; 
+            color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
+        }
+
+        .login-btn {
+            padding: 6px 18px; border: 1px solid var(--primary-teal); background: white;
+            border-radius: 8px; cursor: pointer; color: var(--primary-teal); font-weight: bold;
+            display: flex; align-items: center; gap: 5px; text-decoration: none;
+        }
+
+        /* ================= NAVIGATION (Matched to Index) ================= */
+        .main-nav {
+            display: flex; gap: 25px; padding: 10px 40px; justify-content: center; 
+            background: white; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000;
+        }
+        .main-nav a { text-decoration: none; color: #333; font-size: 14px; font-weight: 500; position: relative; }
+        .main-nav a:hover { color: var(--primary-teal); }
+        .main-nav .active { color: var(--primary-teal); }
+        .main-nav .active::after {
+            content: ""; position: absolute; bottom: -10px; left: 0; width: 100%; height: 3px; background: var(--primary-teal);
+        }
+
+        /* ================= LOGIN HERO SECTION ================= */
+        .login-hero {
+            background: white;
+            padding: 80px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .login-hero h1 { color: var(--primary-dark); font-size: 32px; margin-bottom: 15px; }
+        .login-hero p { color: var(--text-gray); font-size: 18px; margin-bottom: 30px; }
+        
+        .main-login-btn { 
+            background: var(--accent-yellow); color: var(--primary-dark); padding: 15px 50px; 
+            border-radius: 8px; text-decoration: none; font-weight: bold; 
+            font-size: 18px; display: inline-block; transition: 0.3s;
+            border: none; cursor: pointer;
+        }
+        .main-login-btn:hover { background: var(--primary-teal); color: white; transform: translateY(-2px); }
+
+        /* ================= FEATURES SECTION ================= */
+        .features-container { max-width: 1100px; margin: 50px auto; padding: 0 20px; }
+        .feature-row { 
+            display: flex; align-items: center; gap: 40px; margin-bottom: 40px; 
+            background: white; padding: 40px; border-radius: 20px; border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .feature-row:nth-child(even) { flex-direction: row-reverse; }
+        .feature-icon { font-size: 60px; flex: 0 0 100px; text-align: center; }
+        .feature-text h2 { color: var(--primary-dark); margin-bottom: 15px; font-size: 24px; }
+        .feature-text p { color: var(--text-gray); font-size: 16px; line-height: 1.8; }
+
+        /* ================= SUPPORT SECTION ================= */
+        .help-box {
+            max-width: 800px; margin: 40px auto 80px; text-align: center;
+            padding: 30px; border-top: 1px solid var(--border);
+        }
+        .help-box h4 { color: var(--primary-dark); margin-bottom: 10px; }
+        .help-box p { font-size: 14px; color: var(--text-gray); }
+        .help-box a { color: var(--primary-teal); font-weight: bold; text-decoration: none; }
+
+        /* ================= FOOTER (Matched to Index) ================= */
+        footer { background: var(--primary-dark); color: white; padding: 50px 40px 20px; margin-top: 50px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+        .footer-col h4 { color: #d1f0ea; margin-bottom: 15px; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { color: #ccc; font-size: 14px; margin-bottom: 8px; cursor: pointer; }
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid #1a4a44; margin-top: 30px; font-size: 12px; }
+
+        @media (max-width: 768px) {
+            .feature-row, .feature-row:nth-child(even) { flex-direction: column; text-align: center; }
+        }
+    

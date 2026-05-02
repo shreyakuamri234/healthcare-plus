@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Doctors | Healthcare+</title>
+    <link rel="stylesheet" href="{% static 'find.css' %}">
+    <style>
+        /* --- Global & Header Styling --- */
+        .right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info-box {
+            display: flex;
+            align-items: center;
+            background: #f1f3f5;
+            padding: 5px 15px;
+            border-radius: 25px;
+            border: 1px solid #dee2e6;
+            gap: 10px;
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .logout-btn-style {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .logout-btn-style:hover {
+            background-color: #d93636;
+        }
+
+        /* --- Booking Modal Styles --- */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px; top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .booking-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #f9f9f9;
+        }
+
+        .confirm-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .confirm-btn:hover { background-color: #218838; }
+        
+        .server-note { font-size: 11px; color: #d9534f; margin-top: -5px; }
+
+        /* --- Doctor Card Enhanced --- */
+        .doctor-card {
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            transition: transform 0.2s;
+        }
+        .doctor-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .doc-info-flex {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .doc-avatar {
+            font-size: 40px;
+            background: #f8f9fa;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<header class="top-header">
+    <div class="left">
+        <div class="logo" onclick="location.href='/'">Healthcare<span>+</span></div>
+        <a href="#" style="text-decoration: none;">
+            <div class="location-box">
+                <span>Delivery Address</span>
+                <p id="displayAddress">Select Address ▼</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="right">
+        <a href="{% url 'cart'%}" style="text-decoration: none; color: inherit;">
+            <div class="cart-wrapper">
+                🛒<span class="cart-count" id="cartCount">0</span>
+            </div>
+         </a>
+        {% if user.is_authenticated %}
+            <div class="user-info-box">
+                <span class="user-name">Hi, {{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn-style">Logout</button>
+                </form>
+            </div>
+        {% else %}
+            <a href="{% url 'login' %}" style="text-decoration: none;"><button class="login-btn">Login</button></a>
+        {% endif %}
+    </div>
+</header>
+
+<nav class="main-nav">
+    <a href="{% url 'home' %}">Buy Medicines</a>
+    <a href="{% url 'book_appointment' %}" class="active">Find Doctors</a>
+    <a href="{% url 'lab_test' %}">Lab Tests</a>
+    <a href="{% url 'membership' %}">Circle Membership</a>
+    <a href="{% url 'health' %}">Health Records</a>
+</nav>
+
+<section class="doctor-search-hero">
+    <h1>Consult Top Doctors Online</h1>
+    <p>Secure and private consultations with Healthcare+ experts</p>
+    <div class="search-box">
+        <div class="search-field">
+            <span>🔍</span>
+            <input type="text" id="mainSearch" placeholder="Search by doctor name...">
+        </div>
+        <button class="search-submit" onclick="searchByName()">Search</button>
+    </div>
+</section>
+
+<div class="container">
+    <div class="section-header">
+        <h2>Browse by Specialties</h2>
+    </div>
+
+    <div class="specialty-grid" id="specialtyGrid">
+        <div class="specialty-card" data-specialty="General Physician"><span class="spec-icon">🩺</span><span class="spec-name">General Physician</span></div>
+        <div class="specialty-card" data-specialty="Cardiology"><span class="spec-icon">❤️</span><span class="spec-name">Cardiology</span></div>
+        <div class="specialty-card" data-specialty="Dermatology"><span class="spec-icon">🧴</span><span class="spec-name">Dermatology</span></div>
+        <div class="specialty-card" data-specialty="Neurology"><span class="spec-icon">🧠</span><span class="spec-name">Neurology</span></div>
+    </div>
+
+    <div class="section-header">
+        <h2 id="list-title">Recommended Doctors</h2>
+    </div>
+
+    <div id="doctorContainer" class="doctor-list">
+        <p style="text-align: center; padding: 40px; color: #666;">Select a specialty to view available doctors.</p>
+    </div>
+</div>
+
+<!-- Modal de Reserva -->
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <form class="booking-form" method="POST" action="{% url 'book_appointment' %}">
+            {% csrf_token %}
+            <h2 style="margin-bottom: 10px;">Book Appointment</h2>
+            
+            <div class="form-group">
+                <label>Doctor Name:</label>
+                <input type="text" name="doctor" id="admin_doc_name" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Specialization:</label>
+                <input type="text" name="specialization" id="admin_spec" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Patient Name:</label>
+                <input type="text" value="{{ user.username }}" readonly style="background: #e9ecef; font-weight: bold; color: #495057;">
+            </div>
+
+            <div class="form-group">
+                <label>Select Date:</label>
+                <input type="date" name="date" id="admin_date" required>
+            </div>
+
+            <div class="form-group">
+                <label>Select Time:</label>
+                <input type="time" name="time" id="admin_time" required>
+            </div>
+
+            <button type="submit" class="confirm-btn">Confirm Appointment</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const doctors = [
+        // --- General Physicians ---
+        { name: "Dr. Sophia Reed", spec: "General Physician", exp: "10 Years", clinic: "City Hub Medical", icon: "👩‍⚕️" },
+        { name: "Dr. James Wilson", spec: "General Physician", exp: "8 Years", clinic: "Wellness Care Center", icon: "👨‍⚕️" },
+        { name: "Dr. Elena Gilbert", spec: "General Physician", exp: "14 Years", clinic: "Family Health Clinic", icon: "👩‍⚕️" },
+        { name: "Dr. Marcus Thorne", spec: "General Physician", exp: "5 Years", clinic: "Metro Medical", icon: "👨‍⚕️" },
+        { name: "Dr. Sarah Jenkins", spec: "General Physician", exp: "18 Years", clinic: "Downtown Health", icon: "👩‍⚕️" },
+        
+        // --- Cardiology ---
+        { name: "Dr. Richard Henderson", spec: "Cardiology", exp: "15 Years", clinic: "Heart Care Institute", icon: "👨‍⚕️" },
+        { name: "Dr. Amara Okafor", spec: "Cardiology", exp: "11 Years", clinic: "Cardio Plus", icon: "👩‍⚕️" },
+        
+        // --- Dermatology ---
+        { name: "Dr. Michael Chen", spec: "Dermatology", exp: "12 Years", clinic: "Clear Skin Center", icon: "👨‍⚕️" },
+        { name: "Dr. Lisa Ray", spec: "Dermatology", exp: "9 Years", clinic: "Glow Clinic", icon: "👩‍⚕️" },
+        
+        // --- Neurology ---
+        { name: "Dr. Derek Shepherd", spec: "Neurology", exp: "22 Years", clinic: "Memorial Hospital", icon: "👨‍⚕️" }
+    ];
+
+    const container = document.getElementById('doctorContainer');
+    const modal = document.getElementById('bookingModal');
+
+    // Manejar click en especialidades
+    document.querySelectorAll('.specialty-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const spec = this.getAttribute('data-specialty');
+            document.getElementById('list-title').innerText = `${spec} Experts`;
+            const filtered = doctors.filter(d => d.spec === spec);
+            renderDoctors(filtered);
+        });
+    });
+
+    // Renderizar tarjetas de doctores
+    function renderDoctors(list) {
+        container.innerHTML = '';
+        if (list.length === 0) {
+            container.innerHTML = '<p style="text-align: center; width: 100%;">No doctors found for this selection.</p>';
+            return;
+        }
+        list.forEach(doc => {
+            container.innerHTML += `
+                <div class="doctor-card">
+                    <div class="doc-info-flex">
+                        <div class="doc-avatar">${doc.icon}</div>
+                        <div>
+                            <h3 style="margin:0; color: #2c3e50;">${doc.name}</h3>
+                            <p style="margin:4px 0; color: #666; font-size: 14px;">${doc.spec} • ${doc.exp} exp</p>
+                            <small style="color: #007bff; font-weight: 500;">📍 ${doc.clinic}</small>
+                        </div>
+                    </div>
+                    <button class="book-btn" onclick="openModal('${doc.name}', '${doc.spec}')" style="padding: 10px 25px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Book</button>
+                </div>`;
+        });
+    }
+
+    // Buscador por nombre
+    function searchByName() {
+        const query = document.getElementById('mainSearch').value.toLowerCase();
+        const filtered = doctors.filter(d => d.name.toLowerCase().includes(query));
+        document.getElementById('list-title').innerText = `Search Results for "${query}"`;
+        renderDoctors(filtered);
+    }
+
+    // Modal logic
+    function openModal(name, spec) {
+        document.getElementById('admin_doc_name').value = name;
+        document.getElementById('admin_spec').value = spec;
+        
+        // Establecer fecha mínima como HOY para evitar citas en el pasado
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('admin_date');
+        dateInput.value = today;
+        dateInput.setAttribute('min', today);
+
+        modal.style.display = "block";
+    }
+
+    function closeModal() { modal.style.display = "none"; }
+    window.onclick = (event) => { if (event.target == modal) closeModal(); }
+</script>
+
+</body>
+</html>

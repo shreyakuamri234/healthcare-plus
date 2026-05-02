@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Healthcare Payment</title>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</head>
+
+<body style="
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-family:Arial;
+background:#f1f5f9;
+">
+
+<div style="
+background:white;
+padding:40px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+text-align:center;
+width:350px;
+">
+
+<h2 style="color:#2563eb;">
+Healthcare+ Payment
+</h2>
+
+<p>
+Secure payment gateway
+</p>
+
+<button id="pay-btn"
+style="
+background:#2563eb;
+color:white;
+border:none;
+padding:14px 20px;
+width:100%;
+border-radius:10px;
+font-size:18px;
+cursor:pointer;
+">
+
+Pay Now
+
+</button>
+
+</div>
+
+<script>
+
+document.getElementById("pay-btn").onclick = function () {
+
+    var options = {
+
+        "key": "{{ razorpay_key }}",
+
+        "amount": "{{ payment.amount }}",
+
+        "currency": "INR",
+
+        "name": "Healthcare+",
+
+        "description": "Medicine Order",
+
+        "order_id": "{{ payment.id }}",
+
+        "handler": function (response){
+
+            alert("Payment Successful");
+
+        },
+
+        "theme": {
+            "color": "#2563eb"
+        }
+
+    };
+
+    var rzp1 = new Razorpay(options);
+
+    rzp1.open();
+
+};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | Healthcare+</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            /* Clean gradient background - no image, matches healthcare theme */
+            background: linear-gradient(135deg, #e0f2fe 0%, #b9e6f0 50%, #a0dddf 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* Subtle pattern overlay for texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .register-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 480px;
+            max-width: 100%;
+            padding: 2.2rem 2rem;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            animation: fadeSlideUp 0.5s ease-out;
+        }
+
+        .register-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 55px -12px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Logo styling */
+        .logo {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1b6b8f, #2a9d8f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            font-weight: 300;
+            background: linear-gradient(135deg, #2ad18b, #1b6b8f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #1f4e6e;
+            margin-bottom: 0.3rem;
+        }
+
+        .sub-text {
+            text-align: center;
+            color: #6b8ea0;
+            font-size: 0.85rem;
+            margin-bottom: 1.8rem;
+            font-weight: 500;
+        }
+
+        /* Error message styling */
+        .error {
+            background: #fee2e2;
+            color: #dc2626;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 60px;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+            border-left: 3px solid #dc2626;
+        }
+
+        /* Success message styling */
+        .success {
+            background: #e0f2e9;
+            color: #147d4a;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 60px;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+            border-left: 3px solid #2ad18b;
+        }
+
+        /* Form group styling */
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1f4e6e;
+            margin-bottom: 0.45rem;
+        }
+
+        .form-group label i {
+            color: #2a9d8f;
+            font-size: 0.85rem;
+            width: 18px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 60px;
+            border: 1px solid #e0eef4;
+            background-color: #fefefe;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2ad18b;
+            box-shadow: 0 0 0 4px rgba(42, 209, 139, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: #c2d6e2;
+            font-weight: 400;
+            font-size: 0.85rem;
+        }
+
+        /* Password wrapper with toggle */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #8baebe;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: #1b6b8f;
+        }
+
+        /* Register button */
+        .btn-reg {
+            background: linear-gradient(95deg, #1b6b8f, #259073);
+            border: none;
+            padding: 0.85rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 14px rgba(27, 107, 143, 0.25);
+            width: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-top: 0.5rem;
+        }
+
+        .btn-reg:hover {
+            background: linear-gradient(95deg, #105e7e, #1f8368);
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(27, 107, 143, 0.35);
+        }
+
+        .btn-reg:active {
+            transform: scale(0.98);
+        }
+
+        /* Footer links */
+        .footer-links {
+            text-align: center;
+            margin-top: 1.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #5c7c8c;
+        }
+
+        .footer-links a {
+            color: #1b6b8f;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #2ad18b;
+            text-decoration: underline;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.2rem 0 0.5rem;
+            color: #b3cddb;
+            font-size: 0.7rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e1eff5;
+        }
+
+        .divider span {
+            margin: 0 12px;
+            font-weight: 500;
+        }
+
+        /* Terms text */
+        .terms {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #8aacbd;
+            margin-top: 1.2rem;
+        }
+
+        .terms a {
+            color: #1b6b8f;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 520px) {
+            .register-container {
+                padding: 1.5rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            .logo {
+                font-size: 1.7rem;
+            }
+            .btn-reg {
+                padding: 0.7rem;
+            }
+            .form-group input {
+                padding: 0.7rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <div class="logo">Healthcare<span>+</span></div>
+    <h2>Create Account</h2>
+    <div class="sub-text">Join us for exclusive health benefits</div>
+    
+    {% if error %}
+    <p class="error"><i class="fas fa-exclamation-circle"></i> {{ error }}</p>
+    {% endif %}
+
+    {% if success %}
+    <p class="success"><i class="fas fa-check-circle"></i> {{ success }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Username field -->
+        <div class="form-group">
+            <label><i class="fas fa-user"></i> Username</label>
+            <input type="text" name="username" placeholder="Choose a username" value="{{ username|default:'' }}" required autofocus>
+        </div>
+
+        <!-- Email field -->
+        <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email Address</label>
+            <input type="email" name="email" placeholder="your@email.com" value="{{ email|default:'' }}" required>
+        </div>
+
+        <!-- Password field with toggle -->
+        <div class="form-group">
+            <label><i class="fas fa-lock"></i> Password</label>
+            <div class="password-wrapper">
+                <input type="password" name="password" id="regPassword" placeholder="Create a strong password" required>
+                <button type="button" class="toggle-password" id="toggleRegPassword" tabindex="-1">
+                    <i class="far fa-eye-slash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Confirm Password field -->
+        <div class="form-group">
+            <label><i class="fas fa-check-circle"></i> Confirm Password</label>
+            <div class="password-wrapper">
+                <input type="password" name="confirm_password" id="confirmPassword" placeholder="Confirm your password" required>
+                <button type="button" class="toggle-password" id="toggleConfirmPassword" tabindex="-1">
+                    <i class="far fa-eye-slash"></i>
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-reg">
+            <i class="fas fa-user-plus"></i> Register
+        </button>
+    </form>
+
+    <div class="divider">
+        <span>secure & encrypted</span>
+    </div>
+
+    <div class="footer-links">
+        <i class="fas fa-arrow-right-to-bracket"></i> Already have an account? <a href="{% url 'login' %}">Login here</a>
+    </div>
+
+    <div class="terms">
+        By creating an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+    </div>
+</div>
+
+<!-- JavaScript for password toggle and validation -->
+<script>
+    (function() {
+        // Toggle for Registration Password
+        const regPasswordInput = document.getElementById('regPassword');
+        const toggleRegBtn = document.getElementById('toggleRegPassword');
+        
+        if (toggleRegBtn && regPasswordInput) {
+            toggleRegBtn.addEventListener('click', function() {
+                const type = regPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                regPasswordInput.setAttribute('type', type);
+                const icon = toggleRegBtn.querySelector('i');
+                if (icon.classList.contains('fa-eye-slash')) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        }
+
+        // Toggle for Confirm Password
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const toggleConfirmBtn = document.getElementById('toggleConfirmPassword');
+        
+        if (toggleConfirmBtn && confirmPasswordInput) {
+            toggleConfirmBtn.addEventListener('click', function() {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                const icon = toggleConfirmBtn.querySelector('i');
+                if (icon.classList.contains('fa-eye-slash')) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        }
+
+        // Client-side form validation (passwords match)
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const pwd = regPasswordInput.value;
+                const confirmPwd = confirmPasswordInput.value;
+                
+                if (pwd !== confirmPwd) {
+                    e.preventDefault();
+                    alert("❌ Passwords do not match. Please re-enter your password.");
+                } else if (pwd.length > 0 && pwd.length < 6) {
+                    e.preventDefault();
+                    alert("⚠️ Password must be at least 6 characters long for security.");
+                }
+            });
+        }
+
+        console.log("🏥 HealthCare+ Registration Page Ready");
+    })();
+</script>
+
+</body>
+</html>

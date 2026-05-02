@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart | Healthcare+</title>
+
+    <!-- Bootstrap & Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#f5f7fb; font-family:Arial, sans-serif; }
+        .top-header { width:100%; background:white; padding:15px 40px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+        .logo { font-size:30px; font-weight:bold; color:#2c3e50; cursor:pointer; text-decoration: none; }
+        .logo span { color:#0d6efd; }
+        .user-tag { background:#eef4ff; padding:8px 15px; border-radius:30px; font-size:14px; font-weight:bold; }
+        .main-container { max-width:1200px; margin:auto; padding:35px 20px; }
+        .page-title { font-size:24px; margin-bottom:20px; color:#444; font-weight:600; }
+        .cart-grid { display:grid; grid-template-columns:2fr 1fr; gap:25px; }
+        
+        /* Product Card Styling */
+        .product-card { background:white; border-radius:15px; padding:25px; box-shadow:0 4px 15px rgba(0,0,0,0.05); transition:0.3s; }
+        .product-card h3 { color:#0d6efd; margin-bottom:10px; font-size:22px; }
+        
+        /* Quantity Controls */
+        .qty-container { display: flex; align-items: center; gap: 10px; margin: 15px 0; }
+        .qty-btn { 
+            background: #eef4ff; border: 1px solid #0d6efd; color: #0d6efd;
+            width: 30px; height: 30px; border-radius: 5px; font-weight: bold; cursor: pointer;
+        }
+        .qty-btn:hover { background: #0d6efd; color: white; }
+        .qty-val { font-weight: bold; font-size: 16px; min-width: 20px; text-align: center; }
+
+        .remove-btn { background:#dc3545; color:white; border:none; padding:8px 15px; border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer; }
+        .summary-box { background:white; padding:30px; border-radius:15px; height:fit-content; box-shadow:0 4px 15px rgba(0,0,0,0.05); position: sticky; top: 20px; }
+        .summary-row { display:flex; justify-content:space-between; margin:15px 0; font-size:16px; }
+        .total { font-size:24px; font-weight:bold; color:#0d6efd; }
+        .checkout-btn { width:100%; background:#28a745; color:white; border:none; padding:15px; border-radius:10px; margin-top:25px; font-size:17px; font-weight:bold; cursor:pointer; }
+        .empty-msg { background:white; padding:50px; border-radius:15px; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.05); }
+        
+        @media(max-width:900px) { .cart-grid { grid-template-columns:1fr; } .summary-box { position: static; } }
+    </style>
+</head>
+<body>
+
+<header class="top-header">
+    <a href="/" class="logo">Healthcare<span>+</span></a>
+    <div>
+        {% if user.is_authenticated %}
+            <span class="user-tag"><i class="fa fa-user"></i> User</span>
+        {% else %}
+            <a href="{% url 'login' %}"><button class="btn btn-primary login-btn">Login</button></a>
+        {% endif %}
+    </div>
+</header>
+
+<div class="main-container">
+    <h1 class="page-title"><i class="fa fa-cart-shopping"></i> Your Cart</h1>
+    <div class="cart-grid">
+        <div id="itemsContainer">
+            <!-- Products will be injected here -->
+        </div>
+
+        <div class="summary-box">
+            <h3>Order Summary</h3>
+            <hr>
+            <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+            <div class="summary-row" style="color:green;"><span>Delivery</span><span>FREE</span></div>
+            <hr>
+            <div class="summary-row total"><span>Total</span><span id="grandTotal">₹0</span></div>
+            <button class="checkout-btn" onclick="confirmOrder()">
+                <i class="fa fa-check-circle"></i> Proceed to Order
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // LocalStorage se cart load karein, agar quantity nahi hai toh default 1 set karein
+    let cart = JSON.parse(localStorage.getItem('userCart')) || [];
+
+    function renderCart() {
+        const container = document.getElementById('itemsContainer');
+        const subtotalEl = document.getElementById('subtotal');
+        const totalEl = document.getElementById('grandTotal');
+
+        if (cart.length === 0) {
+            container.innerHTML = `
+                <div class="empty-msg">
+                    <h3>Your Cart is Empty</h3>
+                    <p>Add medicines or lab tests first.</p>
+                    <a href="/" class="btn btn-outline-primary mt-2">Continue Shopping</a>
+                </div>`;
+            subtotalEl.innerText = "₹0";
+            totalEl.innerText = "₹0";
+            return;
+        }
+
+        container.innerHTML = cart.map((item, index) => {
+            // Default quantity 1 if not exists
+            if(!item.quantity) item.quantity = 1;
+
+            return `
+            <div class="product-card mb-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h3>${item.name}</h3>
+                        <p class="mb-1"><strong>Category:</strong> ${item.type === 'labtest' ? 'Lab Test' : 'Medicine'}</p>
+                        <p class="mb-1"><strong>Price:</strong> ₹${item.price}</p>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+                </div>
+                
+                <div class="qty-container">
+                    <strong>Quantity:</strong>
+                    <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                    <span class="qty-val">${item.quantity}</span>
+                    <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                </div>
+            </div>
+            `;
+        }).join('');
+
+        calculateTotal();
+    }
+
+    // Quantity update karne ka function
+    function updateQty(index, change) {
+        let newQty = (cart[index].quantity || 1) + change;
+        
+        if (newQty > 0) {
+            cart[index].quantity = newQty;
+            localStorage.setItem('userCart', JSON.stringify(cart));
+            renderCart();
+        } else {
+            // Agar quantity 0 ho rahi hai toh item remove kar dein
+            removeItem(index);
+        }
+    }
+
+    function calculateTotal() {
+        const subtotalEl = document.getElementById('subtotal');
+        const totalEl = document.getElementById('grandTotal');
+        
+        let total = cart.reduce((sum, item) => {
+            return sum + (parseFloat(item.price) * (item.quantity || 1));
+        }, 0);
+
+        subtotalEl.innerText = `₹${total}`;
+        totalEl.innerText = `₹${total}`;
+    }
+
+    function removeItem(index) {
+        if(confirm("Are you sure you want to remove this item?")) {
+            cart.splice(index, 1);
+            localStorage.setItem('userCart', JSON.stringify(cart));
+            renderCart();
+        }
+    }
+
+    function confirmOrder() {
+        if (cart.length === 0) {
+            alert("Cart is empty!");
+            return;
+        }
+
+        const isAuthenticated = "{{ user.is_authenticated }}";
+        if (isAuthenticated === "False") {
+            alert("Please login first.");
+            window.location.href = "{% url 'login' %}";
+            return;
+        }
+
+        // Redirect to order page (Data LocalStorage mein hi rahega)
+        window.location.href = "{% url 'myorder' %}";
+    }
+
+    window.onload = renderCart;
+</script>
+</body>
+</html>

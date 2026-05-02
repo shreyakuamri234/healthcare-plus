@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Delivery Location | Apollo Clone</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+     <link rel="stylesheet" href="{% static 'map.css' %}">
+</head>
+<body>
+
+<div class="map-wrapper">
+    <div class="map-header">
+        <a href="index.html"><button class="back-btn" onclick="history.back()">⬅</button></a>
+        <input type="text" class="search-input" placeholder="Search for area, street name...">
+    </div>
+
+    <div id="map"></div>
+
+    <button class="locate-me-btn" onclick="locateUser()">🎯</button>
+
+    <div class="map-footer">
+        <div class="location-details">
+            <span class="loc-icon">📍</span>
+            <div>
+                <p class="address-text" id="mainAddr">Loading location...</p>
+                <p class="address-sub" id="subAddr">Move the map to adjust pin</p>
+            </div>
+        </div>
+        <button class="confirm-btn" onclick="saveAndGoBack()">Confirm Location</button>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // Initialize Map (Default view: New Delhi)
+    var map = L.map('map').setView([28.6139, 77.2090], 13);
+
+    // Load OpenStreetMap Tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Custom Marker Icon
+    var customIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40]
+    });
+
+    var marker = L.marker([28.6139, 77.2090], {icon: customIcon, draggable: true}).addTo(map);
+
+    // Update address text when marker moves
+    function onMapMove() {
+        var center = map.getCenter();
+        marker.setLatLng(center);
+        updateAddressText(center.lat, center.lng);
+    }
+
+    map.on('move', onMapMove);
+
+    // Get location name from coordinates (Reverse Geocoding)
+    async function updateAddressText(lat, lng) {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+            const data = await response.json();
+            const displayName = data.display_name.split(',').slice(0, 2).join(',');
+            document.getElementById('mainAddr').innerText = displayName || "Selected Location";
+        } catch (error) {
+            document.getElementById('mainAddr').innerText = "Sector 62, Noida";
+        }
+    }
+
+    // Locate User via GPS
+    function locateUser() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                map.setView([lat, lng], 16);
+                marker.setLatLng([lat, lng]);
+                updateAddressText(lat, lng);
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    // Save Location and Return
+    function saveAndGoBack() {
+        const address = document.getElementById('mainAddr').innerText;
+        localStorage.setItem('selectedAddress', address);
+        alert('Delivery location set to: ' + address);
+        window.location.href = 'index.html'; // Or wherever your main page is
+    }
+
+    // Initial address fetch
+    updateAddressText(28.6139, 77.2090);
+</script>
+
+</body>
+</html>

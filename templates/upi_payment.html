@@ -1,0 +1,401 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare+ Payment Gateway</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+            background:rgba(0,0,0,0.6);
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .payment-container{
+            width:900px;
+            height:520px;
+            background:white;
+            border-radius:12px;
+            overflow:hidden;
+            display:flex;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* LEFT */
+
+        .left-panel{
+            width:35%;
+            background:linear-gradient(135deg,#1da1f2,#2563eb);
+            color:white;
+            padding:30px;
+            position:relative;
+        }
+
+        .store-title{
+            font-size:24px;
+            font-weight:bold;
+            margin-bottom:25px;
+        }
+
+        .price-box{
+            background:white;
+            color:#111827;
+            padding:18px;
+            border-radius:12px;
+            margin-bottom:18px;
+        }
+
+        .price-box h4{
+            color:#64748b;
+            margin-bottom:10px;
+        }
+
+        .price{
+            font-size:35px;
+            font-weight:bold;
+        }
+
+        .user-box{
+            background:rgba(255,255,255,0.2);
+            padding:14px;
+            border-radius:10px;
+            margin-top:10px;
+        }
+
+        .secure-text{
+            position:absolute;
+            bottom:20px;
+            font-size:13px;
+            opacity:0.8;
+        }
+
+        /* RIGHT */
+
+        .right-panel{
+            width:65%;
+            background:#fff;
+            padding:25px;
+        }
+
+        .top-heading{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+        }
+
+        .top-heading h2{
+            font-size:24px;
+            color:#111827;
+        }
+
+        .payment-layout{
+            display:flex;
+            gap:25px;
+        }
+
+        .payment-sidebar{
+            width:35%;
+            border-right:1px solid #e5e7eb;
+        }
+
+        .payment-option{
+            padding:15px;
+            border-radius:10px;
+            margin-bottom:10px;
+            cursor:pointer;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .payment-option:hover{
+            background:#eff6ff;
+        }
+
+        .active-option{
+            background:#dbeafe;
+            color:#2563eb;
+        }
+
+        .payment-content{
+            flex:1;
+        }
+
+        .upi-box{
+            border:1px solid #dbe2ea;
+            border-radius:15px;
+            padding:20px;
+        }
+
+        .upi-title{
+            font-size:20px;
+            margin-bottom:20px;
+            color:#111827;
+            font-weight:bold;
+        }
+
+        .qr-layout{
+            display:flex;
+            align-items:center;
+            gap:25px;
+        }
+
+        .qr-layout img{
+            width:170px;
+            border:1px solid #dbe2ea;
+            padding:10px;
+            border-radius:10px;
+        }
+
+        .upi-apps{
+            display:flex;
+            gap:12px;
+            margin-top:15px;
+            flex-wrap:wrap;
+        }
+
+        .app{
+            background:#f3f4f6;
+            padding:10px 16px;
+            border-radius:10px;
+            font-size:14px;
+            font-weight:600;
+        }
+
+        .pay-btn{
+            width:100%;
+            margin-top:25px;
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:15px;
+            border-radius:12px;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .pay-btn:hover{
+            background:#1d4ed8;
+        }
+
+        .card-form{
+            display:none;
+        }
+
+        .card-form input{
+            width:100%;
+            height:50px;
+            border:1px solid #dbe2ea;
+            border-radius:10px;
+            padding-left:15px;
+            margin-bottom:15px;
+        }
+
+        @media(max-width:900px){
+
+            .payment-container{
+                width:95%;
+                height:auto;
+                flex-direction:column;
+            }
+
+            .left-panel,
+            .right-panel{
+                width:100%;
+            }
+
+            .payment-layout{
+                flex-direction:column;
+            }
+
+            .payment-sidebar{
+                width:100%;
+                border-right:none;
+            }
+
+            .qr-layout{
+                flex-direction:column;
+            }
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="payment-container">
+
+    <!-- LEFT -->
+
+    <div class="left-panel">
+
+        <div class="store-title">
+            Healthcare+
+        </div>
+
+        <div class="price-box">
+            <h4>Price Summary</h4>
+            <div class="price">₹1250</div>
+        </div>
+
+        <div class="user-box">
+            <i class="fa fa-user"></i>
+            Using as +91 9876543210
+        </div>
+
+        <div class="secure-text">
+            Secured by Healthcare+ Payments
+        </div>
+
+    </div>
+
+    <!-- RIGHT -->
+
+    <div class="right-panel">
+
+        <div class="top-heading">
+            <h2>Payment Options</h2>
+            <i class="fa fa-times"></i>
+        </div>
+
+        <div class="payment-layout">
+
+            <!-- SIDEBAR -->
+
+            <div class="payment-sidebar">
+
+                <div class="payment-option active-option"
+                     onclick="showUPI()">
+                    UPI
+                </div>
+
+                <div class="payment-option"
+                     onclick="showCard()">
+                    Cards
+                </div>
+
+                <div class="payment-option">
+                    Netbanking
+                </div>
+
+                <div class="payment-option">
+                    Wallet
+                </div>
+
+                <div class="payment-option">
+                    Pay Later
+                </div>
+
+            </div>
+
+            <!-- CONTENT -->
+
+            <div class="payment-content">
+
+                <!-- UPI -->
+
+                <div class="upi-box" id="upiSection">
+
+                    <div class="upi-title">
+                        Scan QR using any UPI App
+                    </div>
+
+                    <div class="qr-layout">
+
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=healthcare-payment" alt="QR">
+
+                        <div>
+
+                            <h4>Pay with:</h4>
+
+                            <div class="upi-apps">
+                                <div class="app">Google Pay</div>
+                                <div class="app">PhonePe</div>
+                                <div class="app">Paytm</div>
+                                <div class="app">BHIM</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <button class="pay-btn" onclick="paymentSuccess()">
+                        Complete Payment
+                    </button>
+
+                </div>
+
+                <!-- CARD -->
+
+                <div class="card-form" id="cardSection">
+
+                    <input type="text" placeholder="Card Number">
+
+                    <input type="text" placeholder="Card Holder Name">
+
+                    <input type="text" placeholder="Expiry Date">
+
+                    <input type="password" placeholder="CVV">
+
+                    <button class="pay-btn" onclick="paymentSuccess()">
+                        Pay Securely
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    function showUPI(){
+
+        document.getElementById('upiSection').style.display = 'block';
+        document.getElementById('cardSection').style.display = 'none';
+
+    }
+
+    function showCard(){
+
+        document.getElementById('upiSection').style.display = 'none';
+        document.getElementById('cardSection').style.display = 'block';
+
+    }
+
+    function paymentSuccess(){
+
+        alert('Payment Successful!');
+
+        localStorage.removeItem('userCart');
+
+        window.location.href = '/order-success/';
+
+    }
+
+</script>
+
+</body>
+</html>
+

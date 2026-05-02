@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful</title>
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:Arial;
+            background:#eef3f9;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .success-box{
+            background:white;
+            padding:50px;
+            border-radius:25px;
+            text-align:center;
+            width:420px;
+            box-shadow:0 4px 25px rgba(0,0,0,0.08);
+        }
+
+        .success-icon{
+            font-size:90px;
+            margin-bottom:20px;
+        }
+
+        h1{
+            color:#16a34a;
+            margin-bottom:15px;
+        }
+
+        p{
+            color:#64748b;
+            font-size:16px;
+            margin-bottom:30px;
+        }
+
+        .home-btn{
+            display:inline-block;
+            background:#2563eb;
+            color:white;
+            text-decoration:none;
+            padding:14px 30px;
+            border-radius:12px;
+            font-weight:bold;
+            transition:0.3s;
+        }
+
+        .home-btn:hover{
+            background:#1d4ed8;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✅
+        </div>
+
+        <h1>Order Successful!</h1>
+
+        <p>
+            Your order has been placed successfully.
+            Medicines will be delivered soon.
+        </p>
+
+        <a href="{% url 'home' %}" class="home-btn">
+            Back to Home
+        </a>
+
+    </div>
+
+</body>
+</html>

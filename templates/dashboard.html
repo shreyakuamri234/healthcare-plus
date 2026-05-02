@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare+ Admin Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            background:#f1f5f9;
+            font-family:Arial, sans-serif;
+            overflow-x:hidden;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar{
+            width:240px;
+            height:100vh;
+            background:#0f172a;
+            position:fixed;
+            left:0;
+            top:0;
+            padding-top:15px;
+
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+        }
+
+        .logo{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        .logo h4{
+            color:white;
+            font-size:22px;
+            margin-top:10px;
+            margin-bottom:0;
+        }
+
+        .logo small{
+            color:#cbd5e1;
+            font-size:12px;
+        }
+
+        .menu-links{
+            margin-top:20px;
+        }
+
+        .menu-item{
+            display:flex;
+            align-items:center;
+            gap:12px;
+
+            color:#d1d5db;
+            text-decoration:none;
+
+            padding:10px 22px;
+
+            font-size:13px;
+
+            transition:0.3s;
+        }
+
+        .menu-item i{
+            font-size:13px;
+            width:18px;
+        }
+
+        .menu-item:hover{
+            background:#2563eb;
+            color:white;
+        }
+
+        .logout-section{
+            padding:15px;
+            border-top:1px solid rgba(255,255,255,0.1);
+        }
+
+        .logout-btn{
+            display:flex;
+            align-items:center;
+            gap:12px;
+
+            text-decoration:none;
+
+            color:#f87171;
+
+            padding:10px 15px;
+
+            border-radius:8px;
+
+            font-size:13px;
+
+            transition:0.3s;
+        }
+
+        .logout-btn:hover{
+            background:#dc2626;
+            color:white;
+        }
+
+        /* ================= MAIN CONTENT ================= */
+
+        .main-content{
+            margin-left:240px;
+            padding:20px;
+        }
+
+        .topbar{
+            background:white;
+            padding:15px 20px;
+            border-radius:10px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:25px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .topbar h4{
+            margin-bottom:0;
+            font-size:22px;
+        }
+
+        .topbar small{
+            font-size:12px;
+            color:gray;
+        }
+
+        /* ================= STATS ================= */
+
+        .stat-card{
+            background:white;
+            border-radius:10px;
+            padding:20px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+            transition:0.3s;
+        }
+
+        .stat-card:hover{
+            transform:translateY(-4px);
+        }
+
+        .stat-card i{
+            font-size:28px;
+            margin-bottom:10px;
+        }
+
+        .stat-card h3{
+            font-size:26px;
+            margin-bottom:5px;
+        }
+
+        .stat-card p{
+            font-size:13px;
+            color:gray;
+            margin-bottom:0;
+        }
+
+        /* ================= QUICK ACTION ================= */
+
+        .quick-card{
+            background:white;
+            border-radius:10px;
+            padding:30px;
+            text-align:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+            transition:0.3s;
+            cursor:pointer;
+        }
+
+        .quick-card:hover{
+            background:#2563eb;
+            color:white;
+        }
+
+        .quick-card i{
+            font-size:35px;
+            margin-bottom:15px;
+        }
+
+        .quick-card h5{
+            font-size:16px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-section{
+            background:white;
+            border-radius:10px;
+            padding:20px;
+            margin-top:25px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .table-section h5{
+            margin-bottom:20px;
+        }
+
+        .badge{
+            font-size:11px;
+            padding:7px 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div>
+
+        <!-- Logo -->
+        <div class="logo">
+
+            <i class="fa-solid fa-heart-pulse fa-3x text-info"></i>
+
+            <h4>Healthcare+</h4>
+
+            <small>Admin Panel</small>
+
+        </div>
+
+        <!-- Menu -->
+        <div class="menu-links">
+
+            <a href="{% url 'dashboard' %}" class="menu-item">
+                <i class="fa fa-house"></i>
+                <span>Home</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-file-invoice"></i>
+                <span>Invoice</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-calendar-check"></i>
+                <span>Appointment</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-users"></i>
+                <span>Customer</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-pills"></i>
+                <span>Medicine</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-truck"></i>
+                <span>Supplier</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-cart-shopping"></i>
+                <span>Purchase</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-box"></i>
+                <span>Order</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-chart-line"></i>
+                <span>Report</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <i class="fa fa-search"></i>
+                <span>Search</span>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Logout -->
+    <div class="logout-section">
+
+        <a href="{% url 'home' %}" class="logout-btn">
+
+            <i class="fa fa-right-from-bracket"></i>
+
+            <span>Logout</span>
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+
+        <div>
+            <h4>Dashboard</h4>
+            <small>Healthcare+ Management System</small>
+        </div>
+
+        <div>
+            <i class="fa fa-bell me-3"></i>
+            <i class="fa fa-gear"></i>
+        </div>
+
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="stat-card">
+
+                <i class="fa fa-users text-primary"></i>
+
+                <h3>{{ total_patients }}</h3>
+
+                <p>Total Patients</p>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+
+                <i class="fa fa-user-doctor text-success"></i>
+
+                <h3>{{ total_doctors }}</h3>
+
+                <p>Total Doctors</p>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+
+                <i class="fa fa-calendar-check text-danger"></i>
+
+                <h3>{{ total_appointments }}</h3>
+
+                <p>Appointments</p>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+
+                <i class="fa fa-pills text-warning"></i>
+
+                <h3>{{ total_medicines }}</h3>
+
+                <p>Medicines</p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-4 mt-2">
+
+        <div class="col-md-3">
+
+            <div class="quick-card">
+
+                <i class="fa fa-user-plus"></i>
+
+                <h5>Add Patient</h5>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="quick-card">
+
+                <i class="fa fa-calendar-plus"></i>
+
+                <h5>New Appointment</h5>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="quick-card">
+
+                <i class="fa fa-capsules"></i>
+
+                <h5>Add Medicine</h5>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="quick-card">
+
+                <i class="fa fa-flask"></i>
+
+                <h5>Lab Reports</h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= RECENT APPOINTMENTS ================= -->
+
+    <div class="table-section">
+
+        <h5>Recent Appointments</h5>
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-primary">
+
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for appointment in appointments %}
+
+                <tr>
+
+                    <td>{{ appointment.user.username }}</td>
+
+                    <td>{{ appointment.doctor_name }}</td>
+
+                    <td>{{ appointment.date }}</td>
+
+                    <td>{{ appointment.time }}</td>
+
+                    <td>
+
+                        {% if appointment.status == "Confirmed" %}
+
+                            <span class="badge bg-success">
+                                {{ appointment.status }}
+                            </span>
+
+                        {% elif appointment.status == "Pending" %}
+
+                            <span class="badge bg-warning text-dark">
+                                {{ appointment.status }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                {{ appointment.status }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center">
+                        No appointments found
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

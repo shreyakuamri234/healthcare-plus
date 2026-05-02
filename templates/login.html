@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | HealthCare+</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            /* Multiple reliable background images - first priority high-res medical image */
+            background-image: url('https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=2');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+        }
+
+        /* Dark gradient overlay to make text and card pop, gives professional healthcare look */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 40, 60, 0.65) 0%, rgba(0, 80, 70, 0.55) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* card styling - clean white with slight glass effect */
+        .login-card {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(0px);
+            border-radius: 32px;
+            border: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            width: 440px;
+            max-width: 100%;
+            padding: 2rem 1.8rem;
+        }
+
+        .login-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 55px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* healthcare+ logo / header */
+        .logo-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #1b6b8f, #2ad18b);
+            width: 65px;
+            height: 65px;
+            border-radius: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo-icon i {
+            font-size: 2.4rem;
+            color: white;
+        }
+
+        .logo-header h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1b6b8f, #2a9d8f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-header p {
+            font-size: 0.85rem;
+            color: #5c7c8c;
+            font-weight: 500;
+        }
+
+        /* form styling */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1f4e6e;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-label i {
+            font-size: 0.85rem;
+            color: #2a9d8f;
+        }
+
+        .input-group-custom {
+            position: relative;
+        }
+
+        .form-control {
+            border-radius: 60px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0eef4;
+            background-color: #fefefe;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: #2ad18b;
+            box-shadow: 0 0 0 4px rgba(42, 209, 139, 0.2);
+            outline: none;
+        }
+
+        .btn-login {
+            background: linear-gradient(95deg, #1b6b8f, #259073);
+            border: none;
+            padding: 0.85rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 14px rgba(27, 107, 143, 0.25);
+            width: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(95deg, #105e7e, #1f8368);
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(27, 107, 143, 0.35);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.4rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #3f6b81;
+        }
+
+        .register-link a {
+            color: #1b6b8f;
+            text-decoration: none;
+            font-weight: 700;
+            margin-left: 4px;
+            transition: color 0.2s;
+        }
+
+        .register-link a:hover {
+            color: #2ad18b;
+            text-decoration: underline;
+        }
+
+        /* divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0 0.8rem;
+            color: #9bb7c7;
+            font-size: 0.7rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e1eff5;
+        }
+
+        .divider span {
+            margin: 0 12px;
+            font-weight: 500;
+        }
+
+        /* demo credentials hint */
+        .demo-hint {
+            background: #eef5fa;
+            border-radius: 44px;
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 1.2rem;
+            color: #286c8a;
+            font-weight: 500;
+            border: 1px solid #d2e5ef;
+        }
+
+        .demo-hint i {
+            margin-right: 6px;
+            font-size: 0.7rem;
+        }
+
+        /* responsiveness */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+            .logo-header h2 {
+                font-size: 1.5rem;
+            }
+            .btn-login {
+                padding: 0.7rem;
+            }
+        }
+
+        /* password toggle eye */
+        .password-wrapper {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #8baebe;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+        .toggle-password:hover {
+            color: #1b6b8f;
+        }
+
+        /* small animation for card */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .login-card {
+            animation: fadeSlideUp 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card login-card">
+        
+        <!-- Healthcare+ branding -->
+        <div class="logo-header">
+            <div class="logo-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h2>HealthCare<span style="font-weight:300">+</span></h2>
+            <p>Secure access to your health portal</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Username field with icon -->
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-user-circle"></i> Username / Email</label>
+                <div class="input-group-custom">
+                    <input type="text" name="username" class="form-control" placeholder="Enter your username" required autofocus>
+                </div>
+            </div>
+
+            <!-- Password field with eye toggle -->
+            <div class="mb-4">
+                <label class="form-label"><i class="fas fa-lock"></i> Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="passwordField" class="form-control" placeholder="••••••••" required>
+                    <button type="button" class="toggle-password" id="togglePasswordBtn" tabindex="-1">
+                        <i class="far fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login">
+                <i class="fas fa-arrow-right-to-bracket"></i> Login
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>HIPAA compliant & encrypted</span>
+        </div>
+
+        <div class="register-link">
+            <i class="fas fa-user-plus"></i> Don't have an account?
+            <a href="{% url 'register' %}">Create account</a>
+        </div>
+
+        <!-- Demo hint for testing -->
+        <div class="demo-hint">
+            <i class="fas fa-stethoscope"></i> Demo: use any credentials (simulated environment)
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Password visibility toggle script -->
+<script>
+    (function() {
+        const toggleBtn = document.getElementById('togglePasswordBtn');
+        const passwordInput = document.getElementById('passwordField');
+
+        if (toggleBtn && passwordInput) {
+            toggleBtn.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                // toggle icon
+                const icon = toggleBtn.querySelector('i');
+                if (icon.classList.contains('fa-eye-slash')) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        }
+
+        // Optional: Add a tiny console greeting (just for fun)
+        console.log("🏥 HealthCare+ Login Page Ready | Secure Portal");
+    })();
+</script>
+
+<!-- Additional fallback CSS: ensure background image loads even if unsplash/pexels is blocked, use reliable solid gradient -->
+<style>
+    /* Fallback if image fails to load - gradient matching healthcare theme */
+    @media not all and (min-width: 1px) {
+        body {
+            background: linear-gradient(135deg, #0f2b3d, #1b5e6e);
+        }
+    }
+    /* Additional style for better compatibility */
+    body {
+        background-color: #0a2a38; /* base color while image loads */
+    }
+    /* subtle glow on login button */
+    .btn-login:active {
+        transform: scale(0.98);
+    }
+    /* rounded corners for inputs */
+    input, button {
+        font-family: inherit;
+    }
+    /* remove default button focus outline */
+    .toggle-password:focus {
+        outline: none;
+    }
+    /* modern placeholder style */
+    ::placeholder {
+        color: #b9cfdd;
+        font-weight: 400;
+        font-size: 0.85rem;
+    }
+</style>
+</body>
+</html>

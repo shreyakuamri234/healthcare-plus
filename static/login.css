@@ -1,0 +1,109 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* BODY BACKGROUND */
+body {
+    height: 100vh;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* LOGIN CARD */
+.login-card {
+    background: #ffffff;
+    width: 380px;
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* LOGO UPDATED TO HEALTHCARE+ */
+.logo-text { 
+    font-size: 28px; 
+    font-weight: 800; 
+    color: #0b6b5c; 
+    letter-spacing: -1px; 
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+.logo-text span { color: #e53e3e; margin-left: 2px; font-size: 32px; }
+
+/* TITLE */
+h2 {
+    margin-bottom: 20px;
+    color: #0d3b36;
+    font-size: 20px;
+}
+
+/* INPUT */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-field:focus {
+    border-color: #0b6b5c;
+}
+
+/* BUTTON */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #ffb400;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #0d3b36;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background: #0b6b5c;
+    color: white;
+}
+
+/* BACK LINK */
+.back-link {
+    display: block;
+    margin-top: 20px;
+    color: #0b6b5c;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media(max-width: 400px) {
+    .login-card {
+        width: 90%;
+        padding: 25px;
+    }
+}

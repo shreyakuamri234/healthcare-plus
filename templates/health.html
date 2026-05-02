@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Records | Healthcare+</title>
+    <link rel="stylesheet" href="{% static 'health.css' %}">
+</head>
+<body>
+
+<div class="top-header">
+    <div class="left">
+        <a href="index.html" class="logo-text">Healthcare<span>+</span></a>
+        <div class="location-box" onclick="location.href='map.html'">
+            <div class="loc-pin">📍</div>
+            <div>
+                <span>Delivery Address</span>
+                <p id="displayAddress">Select Address ▼</p>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+            <a href="{% url 'cart'%}" style="text-decoration: none; color: inherit;">
+                <div class="cart-wrapper">
+                    🛒<span class="cart-count" id="cartCount">0</span>
+                </div>
+            </a>
+        <a href="{% url 'login' %}" style="text-decoration: none;"><button class="login-btn">Login</button></a>
+    </div>
+</div>
+
+<nav class="main-nav">
+  
+       <a href="{% url 'home'%}">Buy Medicines</a>
+         <a href="{% url 'book_appointment' %}">Find Doctors</a>
+         <a href="{% url 'lab_test' %}">Lab Tests</a>
+         <a href="{% url 'membership' %}">Circle Membership</a>
+         <a href="{% url 'health' %}" class="active">Health Records</a>
+</nav>
+
+<section class="login-hero">
+    <h1>Sign In To Access Your Health Records</h1>
+    <p>Your secure, personalized vault for all medical reports and history.</p>
+    <a href="login.html" class="main-login-btn">Login Now</a>
+</section>
+
+<div class="features-container">
+    <div class="feature-row">
+        <div class="feature-icon">📂</div>
+        <div class="feature-text">
+            <h2>Receive & Organize your Health information</h2>
+            <p>Healthcare+ Personal Health Records will sync all your Health Records in real time from our entire ecosystem including Hospitals, Diagnostics, Clinics, and Pharmacy. You can use it to view and share your records anytime, anywhere.</p>
+        </div>
+    </div>
+
+    <div class="feature-row">
+        <div class="feature-icon">📊</div>
+        <div class="feature-text">
+            <h2>Track & Monitor</h2>
+            <p>Digitize all your health records to track health parameters through interactive health graphs based on historical values. Our system helps in understanding your organ's health by analysing abnormal values from your lab reports automatically.</p>
+        </div>
+    </div>
+
+    <div class="feature-row">
+        <div class="feature-icon">🛡️</div>
+        <div class="feature-text">
+            <h2>Safe & Secure</h2>
+            <p>Your privacy is our priority. Personal Health Records stores all your data in an encrypted, secure environment and gives you complete control over who can access your Health Records.</p>
+        </div>
+    </div>
+</div>
+
+<div class="help-box">
+    <h4>Not able to Login?</h4>
+    <p>If you are having trouble logging in, reach out to our support: <a href="mailto:support@healthcareplus.com">support@healthcareplus.com</a></p>
+</div>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Healthcare+</h4>
+            <ul><li>About Us</li><li>Contact Us</li><li>FAQs</li></ul>
+        </div>
+        <div class="footer-col">
+            <h4>Services</h4>
+            <ul><li>Medicine Delivery</li><li>Lab Tests</li><li>Doctor Consult</li></ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul><li>Track Order</li><li>Return Policy</li><li>Privacy</li></ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Healthcare+ Digital Pharmacy. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    window.onload = function() {
+        const savedAddress = localStorage.getItem('selectedAddress');
+        if (savedAddress) {
+            document.getElementById('displayAddress').innerText = savedAddress + " ▼";
+        }
+    };
+</script>
+
+</body>
+</html>

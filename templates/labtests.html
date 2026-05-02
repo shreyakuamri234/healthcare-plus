@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Lab Tests | Healthcare+</title>
+    <link rel="stylesheet" href="{% static 'labtest.css' %}">
+    <style>
+        /* Sirf Header ke alignment ke liye minimal style */
+        .right { display: flex; align-items: center; gap: 15px; }
+        .user-display { font-weight: bold; font-size: 14px; color: #333; background: #f0f0f0; padding: 5px 12px; border-radius: 20px; }
+        .logout-btn-style { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <div class="left">
+            <div class="logo" onclick="location.href='index.html'">Healthcare<span>+</span></div>
+            <a href="map.html" style="text-decoration: none;">
+                <div class="location-box">
+                    <span>Collection Address</span>
+                    <p id="displayAddress">Set Location ▼</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="right">
+            <a href= "{% url 'cart'%}" style="text-decoration: none; color: inherit;">
+                <div class="cart-wrapper">
+                    🛒<span class="cart-count" id="cartCount">0</span>
+                </div>
+            </a>
+        
+        <a href="{% url 'login' %}" style="text-decoration: none;"><button class="login-btn">Login</button></a>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <a href="{% url 'home'%}">Buy Medicines</a>
+        <a href="{% url 'book_appointment' %}">Find Doctors</a>
+        <a href="{% url 'lab_test' %}" class="active">Lab Tests</a>
+        <a href="{% url 'membership' %}">Circle Membership</a>
+        <a href="{% url 'health' %}">Health Records</a>
+    </nav>
+
+    <section class="lab-hero">
+        <div class="container">
+            <h1>Accurate Diagnostics, From Your Home</h1>
+            <p style="opacity: 0.95; font-size: 18px;">NABL Certified Labs | Free Home Sample Collection | 24-Hour Digital Reports</p>
+            <div class="lab-search">
+                <input type="text" id="testSearch" placeholder="Search for 5000+ tests (Full Body, Diabetes, Vitamin D...)">
+                <button onclick="searchTests()">Find Test</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="section-header">
+            <h2 style="margin:0; font-size: 22px;">Shop by Health Concern</h2>
+        </div>
+        
+        <div class="concern-grid" id="categoryTabs">
+            <div class="concern-item active-cat" onclick="filterTests('All', this)"><span>🧪</span><p>Full Body</p></div>
+            <div class="concern-item" onclick="filterTests('Pregnancy', this)"><span>🤰</span><p>Pregnancy</p></div>
+            <div class="concern-item" onclick="filterTests('Diabetes', this)"><span>💉</span><p>Diabetes</p></div>
+            <div class="concern-item" onclick="filterTests('Heart', this)"><span>❤️</span><p>Heart</p></div>
+            <div class="concern-item" onclick="filterTests('Thyroid', this)"><span>🩺</span><p>Thyroid</p></div>
+        </div>
+
+        <div class="main-layout">
+            <main>
+                <div class="section-header">
+                    <h2 id="categoryTitle" style="margin:0; font-size: 22px;">Top Health Checkup Packages</h2>
+                </div>
+                <div id="testContainer"></div>
+            </main>
+
+            <aside class="cart-sidebar">
+                <div class="cart-header"><span>🛍️</span> My Bookings</div>
+                <div id="cartItems">
+                    <p style="font-size: 14px; color: #999; padding: 20px 0; text-align: center;">No tests added yet</p>
+                </div>
+                <div class="cart-total">
+                    <span>Total</span>
+                    <span id="totalPrice">₹0</span>
+                </div>
+                <button class="checkout-btn" onclick="proceedToBooking()">Proceed to Cart</button>
+                <p style="font-size: 11px; color: #38a169; text-align: center; margin-top: 15px;">✓ Free Home Collection included on all bookings</p>
+            </aside>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Healthcare+ Labs</h4>
+                <ul><li>NABL Certification</li><li>Quality Assurance</li><li>Our Lab Network</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Popular Tests</h4>
+                <ul><li>Full Body Checkup</li><li>Vitamin D Test</li><li>Thyroid Profile</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Help & Support</h4>
+                <ul><li>FAQs</li><li>Sample Collection Process</li><li>Report Privacy</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Get the App</h4>
+                <ul><li>Android App</li><li>iOS App</li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Healthcare+ Digital Ecosystem. Designed for Education Purposes Only.</p>
+        </div>
+    </footer>
+
+    <script>
+        const testData = [
+            { id: 501, cat: 'Pregnancy', name: 'Pregnancy Essential Profile', params: '12 Parameters', price: 1499, old: 3000, tests: ['CBC', 'Blood Group', 'TSH', 'Iron Profile'] },
+            { id: 502, cat: 'Diabetes', name: 'Diabetes Full Care', params: '8 Parameters', price: 699, old: 1200, tests: ['HbA1c', 'Fasting Sugar', 'Post Prandial Sugar'] },
+            { id: 503, cat: 'Heart', name: 'Heart Risk Profile', params: '15 Parameters', price: 1899, old: 4000, tests: ['Lipid Profile', 'CRP', 'ECG Analysis'] },
+            { id: 504, cat: 'Thyroid', name: 'Thyroid Profile Total', params: '3 Parameters', price: 399, old: 800, tests: ['T3', 'T4', 'TSH'] },
+            { id: 505, cat: 'All', name: 'Platinum Full Body Checkup', params: '90 Parameters', price: 2999, old: 7000, tests: ['Liver Function', 'Kidney Function', 'Vitamin D', 'Vitamins B12'] },
+            { id: 506, cat: 'All', name: 'Smart Health Advance', params: '60 Parameters', price: 1299, old: 2500, tests: ['CBC', 'Urine Analysis', 'Diabetes Screening'] }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('userCart')) || [];
+
+        function renderTests(filter = 'All') {
+            const container = document.getElementById('testContainer');
+            const title = document.getElementById('categoryTitle');
+            container.innerHTML = '';
+            title.innerText = filter === 'All' ? 'Top Health Checkup Packages' : filter + ' Special Packages';
+
+            const filtered = filter === 'All' ? testData : testData.filter(t => t.cat === filter);
+
+            filtered.forEach(item => {
+                container.innerHTML += `
+                    <div class="lab-package-card">
+                        <div>
+                            <h4 style="color: var(--primary-dark); font-size: 18px;">${item.name}</h4>
+                            <span class="parameters">Includes ${item.params}</span>
+                            <ul class="test-preview">
+                                ${item.tests.map(t => `<li><span style="color:var(--primary-teal)">✓</span> ${t}</li>`).join('')}
+                            </ul>
+                            <p style="font-size: 12px; margin-top:15px; color:#38a169; font-weight:600;">🏠 Free Home Sample Collection included</p>
+                        </div>
+                        <div class="package-pricing">
+                            <span class="original-price">₹${item.old}</span>
+                            <span class="current-price">₹${item.price}</span>
+                            <button class="add-btn" onclick="addToCart(${item.id})">Add to Booking</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function filterTests(category, element) {
+            document.querySelectorAll('.concern-item').forEach(el => el.classList.remove('active-cat'));
+            element.classList.add('active-cat');
+            renderTests(category);
+        }
+
+        function addToCart(id) {
+            const product = testData.find(p => p.id === id);
+            // Check for duplicates
+            if(cart.some(item => item.id === id)) {
+                alert("Already added to your bookings!");
+                return;
+            }
+            // Hum cart mein ek extra field 'type' add kar rahe hain taaki cart page par pata chale ye medicine hai ya lab test
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                type: 'labtest',
+                image: 'https://cdn-icons-png.flaticon.com/512/2782/2782860.png'
+            });
+            saveAndRefreshCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveAndRefreshCart();
+        }
+
+        function saveAndRefreshCart() {
+            localStorage.setItem('userCart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('totalPrice');
+            const cartCount = document.getElementById('cartCount');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="font-size: 14px; color: #999; padding: 20px 0; text-align: center;">No tests added yet</p>';
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item" style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+                        <span style="font-size:13px; max-width:120px;">${item.name}</span>
+                        <div style="text-align:right">
+                            <strong>₹${item.price}</strong>
+                            <p onclick="removeFromCart(${index})" style="color:red; font-size:10px; cursor:pointer; margin:0;">Remove</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            cartTotal.innerText = `₹${total}`;
+            cartCount.innerText = cart.length;
+        }
+
+        function searchTests() {
+            const query = document.getElementById('testSearch').value.toLowerCase();
+            const filtered = testData.filter(t => t.name.toLowerCase().includes(query) || t.cat.toLowerCase().includes(query));
+            document.getElementById('categoryTitle').innerText = `Results for "${query}"`;
+            renderTestsSearch(filtered);
+        }
+
+        function renderTestsSearch(list) {
+            const container = document.getElementById('testContainer');
+            container.innerHTML = list.length === 0 ? '<p style="padding:40px; text-align:center;">No tests found.</p>' : '';
+            list.forEach(item => {
+                container.innerHTML += `
+                    <div class="lab-package-card">
+                        <div>
+                            <h4 style="color: var(--primary-dark); font-size: 18px;">${item.name}</h4>
+                            <span class="parameters">Includes ${item.params}</span>
+                        </div>
+                        <div class="package-pricing">
+                            <span class="current-price">₹${item.price}</span>
+                            <button class="add-btn" onclick="addToCart(${item.id})">Add to Booking</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function proceedToBooking() {
+            if (cart.length === 0) {
+                alert('Please add at least one test to proceed.');
+                return;
+            }
+            // Isse Django ke cart page par bhej rahe hain
+            window.location.href = "{% url 'cart' %}"; 
+        }
+
+        window.onload = function() {
+            renderTests('All');
+            updateCartUI();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+ /* Reusing the same styles as login for consistency */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background-color: #f8fafb; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .reg-container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 450px; text-align: center; }
+        .logo { font-size: 28px; font-weight: 800; color: #0b6b5c; margin-bottom: 20px; }
+        .logo span { color: #e53e3e; }
+        h2 { color: #0d3b36; margin-bottom: 10px; font-size: 22px; }
+        .form-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+        .btn-reg { background: #0b6b5c; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        .footer-links { margin-top: 20px; font-size: 13px; color: #666; }
+        .footer-links a { color: #0b6b5c; text-decoration: none; font-weight: bold; }

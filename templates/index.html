@@ -1,0 +1,305 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare+ | Flash Sale 50% Off</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<div class="top-header">
+    <div class="left">
+        <div class="logo-text">Healthcare<span>+</span></div>
+        <div class="location-box" onclick="location.href='map.html'">
+            <div class="loc-pin">📍</div>
+            <div>
+                <span>Delivery Address</span>
+                <p id="displayAddress">Select Address ▼</p>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+           <a href="{% url 'cart'%}" style="text-decoration: none; color: inherit;">
+                <div class="cart-wrapper">
+                    🛒<span class="cart-count" id="cartCount">0</span>
+                </div>
+            </a>
+        <a href="{% url 'login' %}" style="text-decoration: none;"><button class="login-btn">Login</button></a>
+    </div>
+</div>
+
+<nav class="main-nav">
+    <a href="{% url 'home'%}" class="active">Buy Medicines</a>
+    <a href="{% url 'book_appointment' %}">Find Doctors</a>
+    <a href="{% url 'lab_test' %}">Lab Tests</a>
+    <a href="{% url 'membership' %}">Circle Membership</a>
+    <a href="{% url 'health' %}">Health Records</a>
+</nav>
+
+<div class="sub-nav">
+    <a href="#">Apollo Products</a>
+    <a href="#">Baby Care</a>
+    <a href="#">Nutritional Drinks</a>
+    <a href="#">Personal Care</a>
+    <a href="#">Ayurveda</a>
+    <a href="#">Health Devices</a>
+    <a href="#">Home Essentials</a>
+</div>
+
+<section class="hero">
+    <h1>Your Pharmacy, Delivered.</h1>
+    <div class="search-box">
+        🔍 <input type="text" placeholder="Search for medicines, vitamins, or wellness products...">
+    </div>
+</section>
+
+<section class="services">
+    <div class="service-card mega-sale" onclick="scrollToSection('mega-clearance')">
+        <h3 style="color: #e53e3e;">UPTO 50% OFF</h3>
+        <p>Clearance Sale Active</p>
+    </div>
+    <div class="service-card" onclick="scrollToSection('medicine-sale')">
+        <h3>Flat 20% OFF</h3>
+        <p>Essential Medicines</p>
+    </div>
+    <div class="service-card" onclick="scrollToSection('summer-essentials')">
+        <h3>Summer Store</h3>
+        <p>Upto 30% Off</p>
+    </div>
+</section>
+
+<div class="section-container" id="mega-clearance">
+    <h2 class="section-title">Mega Clearance Sale <span class="discount-tag-red">FLAT 50% OFF</span></h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <div class="off-badge">50% OFF</div>
+            <img src="https://images.ctfassets.net/jrjg564z28it/3FQHgzWAVmDn8SumtjpPmD/352c34447ab144aaf6d4bfc04e3cf7a2/Product_Desktop-06.jpg">
+            <span class="brand-name">ORSL</span>
+            <p class="product-name">ORSL Rehydrate Apple Drink (200ml)</p>
+            <div class="price-row"><span class="current-price">₹20</span><span class="old-price">₹40</span></div>
+            <button class="add-btn" onclick="addToCart(1, 'ORSL Drink', 20)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <div class="off-badge">50% OFF</div>
+            <img src="https://neuherbs.com/cdn/shop/files/deep_sea_fish_oil_1_899fb24a-4621-4d47-bc67-925047435770.png?v=1757050903&width=600">
+            <span class="brand-name">Apollo Life</span>
+            <p class="product-name">Deep Sea Fish Oil Omega-3 (30 Caps)</p>
+            <div class="price-row"><span class="current-price">₹250</span><span class="old-price">₹500</span></div>
+            <button class="add-btn" onclick="addToCart(2, 'Fish Oil', 250)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <div class="off-badge">50% OFF</div>
+            <img src="https://m.media-amazon.com/images/I/51RitU-fUAL._SY300_SX300_QL70_FMwebp_.jpg">
+            <span class="brand-name">Horlicks</span>
+            <p class="product-name">Horlicks Diabetes Plus Vanilla (400g)</p>
+            <div class="price-row"><span class="current-price">₹297</span><span class="old-price">₹595</span></div>
+            <button class="add-btn" onclick="addToCart(3, 'Horlicks', 297)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <div class="off-badge">50% OFF</div>
+            <img src="https://himalayawellness.in/cdn/shop/files/ASHWAGANDHATABs60sINDIA10913F39FV.jpg?v=1749203053&width=720">
+            <span class="brand-name">Himalaya</span>
+            <p class="product-name">Himalaya Ashvagandha (60 Tablets)</p>
+            <div class="price-row"><span class="current-price">₹115</span><span class="old-price">₹230</span></div>
+            <button class="add-btn" onclick="addToCart(4, 'Ashvagandha', 115)">Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+<div class="section-container" id="summer-essentials" style="background: #fff9e6; border-radius: 15px; margin-top: 20px; margin-bottom: 20px;">
+    <h2 class="section-title">Summer Store <span class="discount-tag-orange">BEAT THE HEAT</span></h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="https://rukminim2.flixcart.com/image/1366/1366/xif0q/sunscreen/f/d/n/50-3d-youth-boost-sun-screen-gel-cream-40-vlcc-original-imahg2afstyhxcuk.jpeg?q=90">
+            <span class="brand-name">La Shield</span>
+            <p class="product-name">Sunscreen Gel SPF 40 PA+++ (60g)</p>
+            <div class="price-row"><span class="current-price">₹650</span><span class="old-price">₹790</span></div>
+            <button class="add-btn" onclick="addToCart(5, 'Sunscreen', 650)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://m.media-amazon.com/images/I/511OqQfIijL._SY300_SX300_QL70_FMwebp_.jpg">
+            <span class="brand-name">Glucon-D</span>
+            <p class="product-name">Glucon-D Instant Energy Tangy Orange (500g)</p>
+            <div class="price-row"><span class="current-price">₹175</span><span class="old-price">₹210</span></div>
+            <button class="add-btn" onclick="addToCart(6, 'Glucon-D', 175)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://m.media-amazon.com/images/I/51ndED8ZWkL._SY450_.jpg">
+            <span class="brand-name">BoroPlus</span>
+            <p class="product-name">BoroPlus Prickly Heat Powder (150g)</p>
+            <div class="price-row"><span class="current-price">₹95</span><span class="old-price">₹130</span></div>
+            <button class="add-btn" onclick="addToCart(7, 'Heat Powder', 95)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://m.media-amazon.com/images/I/51dyKxcQAaL._SY450_.jpg">
+            <span class="brand-name">L'Oreal</span>
+            <p class="product-name">L'Oreal Paris Revitalift Serum (30ml)</p>
+            <div class="price-row"><span class="current-price">₹499</span><span class="old-price">₹799</span></div>
+            <button class="add-btn" onclick="addToCart(8, 'Serum', 499)">Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+<div class="section-container" id="medicine-sale" style="border-top: 1px solid #eee;">
+    <h2 class="section-title">Everyday Essentials <span class="discount-tag-orange">UPTO 20% OFF</span></h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="https://cdn01.pharmeasy.in/dam/products/I01274/pantocid-40mg-strip-of-15-tablets-1-1717073259.jpg">
+            <span class="brand-name">Pansoft</span>
+            <p class="product-name">Pantocid 40mg Tablet (15 Tabs)</p>
+            <div class="price-row"><span class="current-price">₹142</span><span class="old-price">₹178</span></div>
+            <button class="add-btn" onclick="addToCart(9, 'Pantocid', 142)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://d1s24u4ln0wd0i.cloudfront.net/med/3606/DOLO%20650MG%20TAB%201X15_1.webp">
+            <span class="brand-name">Dolo</span>
+            <p class="product-name">Dolo 650mg Tablet (15 Tabs)</p>
+            <div class="price-row"><span class="current-price">₹28</span><span class="old-price">₹32</span></div>
+            <button class="add-btn" onclick="addToCart(10, 'Dolo 650', 28)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://m.media-amazon.com/images/I/61IPu+zLouL._SL1500_.jpg">
+            <span class="brand-name">Vicks</span>
+            <p class="product-name">Vicks Vaporub Pain Relief (50ml)</p>
+            <div class="price-row"><span class="current-price">₹135</span><span class="old-price">₹160</span></div>
+            <button class="add-btn" onclick="addToCart(11, 'Vicks', 135)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <img src="https://m.media-amazon.com/images/I/51r2AuwfwNL._SL1000_.jpg">
+            <span class="brand-name">Dettol</span>
+            <p class="product-name">Dettol Antiseptic Liquid (500ml)</p>
+            <div class="price-row"><span class="current-price">₹182</span><span class="old-price">₹210</span></div>
+            <button class="add-btn" onclick="addToCart(12,'Dettol', 182)">Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Healthcare+</h4>
+            <ul><li>About Us</li><li>Contact Us</li><li>FAQs</li></ul>
+        </div>
+        <div class="footer-col">
+            <h4>Services</h4>
+            <ul><li>Medicine Delivery</li><li>Lab Tests</li><li>Doctor Consult</li></ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul><li>Track Order</li><li>Return Policy</li><li>Privacy</li></ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Healthcare+ Digital Pharmacy. All Rights Reserved.</p>
+    </div>
+</footer>
+<script>
+
+    function scrollToSection(id) {
+        document.getElementById(id).scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    // CSRF TOKEN
+    function getCookie(name) {
+        let cookieValue = null;
+
+        if (document.cookie && document.cookie !== '') {
+
+            const cookies = document.cookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+
+                const cookie = cookies[i].trim();
+
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+
+                    break;
+                }
+            }
+        }
+
+        return cookieValue;
+    }
+
+    // ADD TO CART
+    function addToCart(id, name, price, type='medicine') {
+
+        let cart = JSON.parse(localStorage.getItem('userCart')) || [];
+
+        let item = {
+            id: id,
+            name: name,
+            price: parseInt(price),
+            quantity: 1,
+            type: type
+        };
+
+        cart.push(item);
+
+        localStorage.setItem('userCart', JSON.stringify(cart));
+
+        // DATABASE SAVE
+        fetch('/add-to-cart/', {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+
+            body: JSON.stringify({
+                product_id: id,
+                quantity: 1
+            })
+
+        })
+
+        .then(response => response.json())
+
+        .then(data => {
+            console.log("Saved:", data);
+        })
+
+        .catch(error => {
+            console.log("Error:", error);
+        });
+
+        updateCartCount();
+
+        alert(name + " added to cart!");
+    }
+
+    // CART COUNT
+    function updateCartCount() {
+
+        let cart = JSON.parse(localStorage.getItem('userCart')) || [];
+
+        document.getElementById('cartCount').innerText = cart.length;
+    }
+
+    // PAGE LOAD
+    window.onload = function() {
+
+        const savedAddress = localStorage.getItem('selectedAddress');
+
+        if(savedAddress){
+
+            document.getElementById('displayAddress').innerText =
+            savedAddress + " ▼";
+        }
+
+        updateCartCount();
+    };
+
+</script>
+</body>
+</html>
