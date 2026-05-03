@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Ye line SecurityMiddleware ke theek niche honi chahiye
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -154,3 +156,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py mein check karein
 RAZORPAY_KEY_ID = 'rzp_test_YourActualKey'  # <--- Check karein koi extra space toh nahi
 RAZORPAY_KEY_SECRET = 'YourSecretKey'
+
+CORS_ALLOW_ALL_ORIGINS = True  # Ab ye line kaam karegi
