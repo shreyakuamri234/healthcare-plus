@@ -13,8 +13,9 @@ from django.shortcuts import get_object_or_404
 from .models import Cart, Product
 from .models import Order
 
-# Razorpay client initialization
-client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+# Ye line initiate_payment ke upar honi chahiye
+client = razorpay.Client(auth=("rzp_test_SknKwzX098VXi6", "zaXj27VnNgc6d1Cec3ZIzQBO"))
+
 
 # ------------------ HOME & PROFILE ------------------
 

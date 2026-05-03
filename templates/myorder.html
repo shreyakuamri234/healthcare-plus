@@ -182,21 +182,42 @@
                 return;
             }
 
-            // YE RAHA WOH OPTIONS WALA HISSA
-            const options = {
-                "key": "rzp_test_YourActualKeyHere", // Apni dashboard wali key yahan likhein
-                "amount": orderData.amount, // Paise mein
-                "currency": "INR",
-                "name": "Healthcare+",
-                "description": "Medicine Order",
-                "order_id": orderData.id, // Backend se aayi Razorpay ID
-                "callback_url": "/payment-handler/", 
-                "prefill": { "name": name, "contact": phone },
-                "theme": { "color": "#2563eb" },
-                "modal": {
-                    "ondismiss": function() { alert("Payment Cancelled."); }
-                }
-            };
+        
+            // ... response.json() ke baad ...
+const options = {
+    "key": "rzp_test_SknKwzX098VXi6", // Sahi Key ID
+    "amount": orderData.amount,
+    "currency": "INR",
+    "name": "Healthcare+",
+    "description": "Medicine Order",
+    "order_id": orderData.id,
+    "handler": function (response) {
+        // Payment success hone par ye form data backend ko jayega
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/payment-handler/'; // Aapka backend URL
+
+        const fields = {
+            'razorpay_payment_id': response.razorpay_payment_id,
+            'razorpay_order_id': response.razorpay_order_id,
+            'razorpay_signature': response.razorpay_signature,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        };
+
+        for (const key in fields) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = fields[key];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    },
+    "prefill": { "name": name, "contact": phone },
+    "theme": { "color": "#2563eb" }
+};
 
 
             const rzp1 = new Razorpay(options);
