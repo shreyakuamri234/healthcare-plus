@@ -148,7 +148,8 @@ def payment_handler(request): # Pehle iska naam 'payment_success' tha
             cart_items.delete()
             
             return redirect('order_success')
-        except:
+        except Exception as e:
+            print(f"Payment Error: {e}") # Terminal mein error check karein
             return render(request, 'payment_failed.html')
 
 # ------------------ DOCTOR & LAB TESTS ------------------
