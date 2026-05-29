@@ -106,64 +106,23 @@
 
     <!-- Pehle Razorpay ki library load karein -->
      <!-- Ye line sabse zaroori hai -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script> <!-- Library yahan add kar di -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-    let cart = JSON.parse(localStorage.getItem('userCart')) || [];
-
-    function renderOrderSummary() {
-        const cartContainer = document.getElementById('cartItems');
-        if (cart.length === 0) {
-            cartContainer.innerHTML = `<p class="text-muted text-center">Your cart is empty!</p>`;
-            updateTotals();
-            return;
-        }
-        cartContainer.innerHTML = cart.map((item, index) => {
-            const itemQty = item.quantity || 1;
-            return `
-            <div class="product-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <h5 class="mb-1" style="font-size: 17px;">${item.name}</h5>
-                        <div class="fw-bold mt-1 text-primary">₹${item.price * itemQty}</div>
-                        <div class="qty-wrapper">
-                            <button class="sm-qty-btn" onclick="updateQty(${index}, -1)">-</button>
-                            <span class="qty-text">${itemQty}</span>
-                            <button class="sm-qty-btn" onclick="updateQty(${index}, 1)">+</button>
-                        </div>
-                    </div>
-                    <button class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
-                </div>
-            </div>`;
-        }).join('');
-        updateTotals();
-    }
-
-    function updateQty(index, change) {
-        let newQty = (cart[index].quantity || 1) + change;
-        if (newQty > 0) { cart[index].quantity = newQty; localStorage.setItem('userCart', JSON.stringify(cart)); renderOrderSummary(); }
-        else { removeItem(index); }
-    }
-
-    function removeItem(index) {
-        cart.splice(index, 1);
-        localStorage.setItem('userCart', JSON.stringify(cart));
-        renderOrderSummary();
-    }
-
-    function updateTotals() {
-        let total = cart.reduce((sum, item) => sum + (parseFloat(item.price) * (item.quantity || 1)), 0);
-        document.getElementById('subtotal').innerText = `₹${total}`;
-        document.getElementById('grandTotal').innerText = `₹${total}`;
-    }
-
+    // 1. Sabse pehle placeOrder function ko upar rakh dete hain taaki yeh pehle load ho jaye
     async function placeOrder() {
         const name = document.getElementById('custName').value;
         const phone = document.getElementById('custPhone').value;
         const address = document.getElementById('custAddress').value;
         const amount = document.getElementById('grandTotal').innerText.replace('₹', ''); 
 
-        if (!name || !phone || !address) { alert("Please fill details."); return; }
-        if (cart.length === 0) { alert("Cart is empty!"); return; }
+        if (!name || !phone || !address) { 
+            alert("Please fill details."); 
+            return; 
+        }
+        if (cart.length === 0) { 
+            alert("Cart is empty!"); 
+            return; 
+        }
 
         try {
             const response = await fetch('/initiate-payment/', {
@@ -182,49 +141,47 @@
                 return;
             }
 
-        
-            // ... response.json() ke baad ...
-const options = {
-    "key": "rzp_test_SknKwzX098VXi6", // Sahi Key ID
-    "amount": orderData.amount,
-    "currency": "INR",
-    "name": "Healthcare+",
-    "description": "Medicine Order",
-    "order_id": orderData.id,
-    "handler": function (response) {
-        // Payment success hone par ye form data backend ko jayega
-        // 1. Agar aap bina kisi backend verification ke direct test karna chahti hain:
-  callback_url:
-    "https://healthcare-plus-jup9.onrender.com/payment-success",
+            const options = {
+                "key": "rzp_test_SknKwzX098VXi6", 
+                "amount": orderData.amount,
+                "currency": "INR",
+                "name": "Healthcare+",
+                "description": "Medicine Order",
+                "order_id": orderData.id,
+                "handler": function (razorpayResponse) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/payment-handler/'; 
 
-  redirect: true
-};
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/payment-handler/'; // Aapka backend URL
+                    // Django CSRF Token ko safely hidden input se nikalne ka tarika
+                    const csrfToken = '{{ csrf_token }}';
 
-        const fields = {
-            'razorpay_payment_id': response.razorpay_payment_id,
-            'razorpay_order_id': response.razorpay_order_id,
-            'razorpay_signature': response.razorpay_signature,
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
-        };
+                    const fields = {
+                        'razorpay_payment_id': razorpayResponse.razorpay_payment_id,
+                        'razorpay_order_id': razorpayResponse.razorpay_order_id,
+                        'razorpay_signature': razorpayResponse.razorpay_signature,
+                        'csrfmiddlewaretoken': csrfToken
+                    };
 
-        for (const key in fields) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = fields[key];
-            form.appendChild(input);
-        }
+                    for (const key in fields) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = key;
+                        input.value = fields[key];
+                        form.appendChild(input);
+                    }
 
-        document.body.appendChild(form);
-        form.submit();
-    },
-    "prefill": { "name": name, "contact": phone },
-    "theme": { "color": "#2563eb" }
-};
-
+                    document.body.appendChild(form);
+                    form.submit();
+                },
+                "prefill": { 
+                    "name": name, 
+                    "contact": phone 
+                },
+                "theme": { 
+                    "color": "#2563eb" 
+                }
+            };
 
             const rzp1 = new Razorpay(options);
             rzp1.open();
@@ -233,6 +190,60 @@ const options = {
             console.error("Error:", error);
             alert("Connection error. Check terminal.");
         }
+    }
+
+    // 2. Baki ka cart management code niche
+    let cart = JSON.parse(localStorage.getItem('userCart')) || [];
+
+    function renderOrderSummary() {
+        const cartContainer = document.getElementById('cartItems');
+        if (cart.length === 0) {
+            cartContainer.innerHTML = `<p class="text-muted text-center">Your cart is empty!</p>`;
+            updateTotals();
+            return;
+        }
+        cartContainer.innerHTML = cart.map((item, index) => {
+            const itemQty = item.quantity || 1;
+            return `
+            <div class="product-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="mb-1" style="font-size: 17px;">${item.name}</h5>
+                        <div class="fw-bold mt-1 text-primary">₹${item.price * itemQty}</div>
+                        <div class="qty-wrapper">
+                            <button type="button" class="sm-qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                            <span class="qty-text">${itemQty}</span>
+                            <button type="button" class="sm-qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button type="button" class="remove-btn" onclick="removeItem(${index})"><i class="fa fa-trash"></i></button>
+                </div>
+            </div>`;
+        }).join('');
+        updateTotals();
+    }
+
+    function updateQty(index, change) {
+        let newQty = (cart[index].quantity || 1) + change;
+        if (newQty > 0) { 
+            cart[index].quantity = newQty; 
+            localStorage.setItem('userCart', JSON.stringify(cart)); 
+            renderOrderSummary(); 
+        } else { 
+            removeItem(index); 
+        }
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('userCart', JSON.stringify(cart));
+        renderOrderSummary();
+    }
+
+    function updateTotals() {
+        let total = cart.reduce((sum, item) => sum + (parseFloat(item.price) * (item.quantity || 1)), 0);
+        document.getElementById('subtotal').innerText = `₹${total}`;
+        document.getElementById('grandTotal').innerText = `₹${total}`;
     }
 
     window.onload = renderOrderSummary;
