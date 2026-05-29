@@ -151,11 +151,9 @@ const options = {
     "description": "Medicine Order",
     "order_id": orderData.id,
     
-    "modal": {
-        "backdropclose": false,
-        "escape": false,
-        "handleback": false
-    },
+    // 🔴 YEH DONO LINES JOD DI HAIN (Kuch bina remove kiye)
+    "redirect": true,
+    "callback_url": window.location.origin + "/order-success/", 
 
     "handler": function (razorpayResponse) {
         const form = document.createElement('form');
