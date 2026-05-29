@@ -151,16 +151,21 @@ const options = {
     "description": "Medicine Order",
     "order_id": orderData.id,
     
-    // 🔴 YEH DONO LINES JOD DI HAIN (Kuch bina remove kiye)
-    "redirect": true,
-    "callback_url": window.location.origin + "/order-success/", 
+    // 🔴 Humne redirect aur callback_url hata diya hai taaki handler run ho
+    "modal": {
+        "backdropclose": false,
+        "escape": false,
+        "handleback": false
+    },
 
     "handler": function (razorpayResponse) {
+        console.log("Payment completed inside Razorpay window!");
+        
+        // 1. Django backend par submit karne ke liye form ready karein
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '/order-success/'; 
 
-        // Django CSRF Token ko safely hidden input se nikalne ka tarika
         const csrfToken = '{{ csrf_token }}';
 
         const fields = {
@@ -179,19 +184,23 @@ const options = {
         }
 
         document.body.appendChild(form);
-        form.submit();
+
+        // 🔴 YAHAN RUKTI HAI SCREEN: 3 second tak green animation dikhega, fir automatic redirect hoga
+        setTimeout(function() {
+            form.submit();
+        }, 3000); 
     },
     "prefill": { 
-        "name": name, 
-        "contact": phone 
+        "name": typeof name !== 'undefined' ? name : "Test User", 
+        "contact": typeof phone !== 'undefined' ? phone : "9999999999" 
     },
     "theme": { 
         "color": "#2563eb" 
     }
 };
 
-            const rzp1 = new Razorpay(options);
-            rzp1.open();
+var rzp1 = new Razorpay(options);
+rzp1.open();
 
         } catch (error) {
             console.error("Error:", error);
