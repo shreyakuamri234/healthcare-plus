@@ -140,7 +140,9 @@
                 alert("Error: " + orderData.message);
                 return;
             }
-
+console.log("Current Order ID:", orderData.id);
+console.log("Current Amount:", orderData.amount);
+            
             const options = {
                 "key": "rzp_test_SknKwzX098VXi6", 
                 "amount": orderData.amount,
