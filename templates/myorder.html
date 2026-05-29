@@ -143,48 +143,52 @@
 console.log("Current Order ID:", orderData.id);
 console.log("Current Amount:", orderData.amount);
             
-            const options = {
-                "key": "rzp_test_SknKwzX098VXi6", 
-                "amount": orderData.amount,
-                "currency": "INR",
-                "name": "Healthcare+",
-                "description": "Medicine Order",
-                "order_id": orderData.id,
-                "handler": function (razorpayResponse) {
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '/order-success/'; 
+const options = {
+    "key": "rzp_test_SknKwzX098VXi6", 
+    "amount": orderData.amount,
+    "currency": "INR",
+    "name": "Healthcare+",
+    "description": "Medicine Order",
+    "order_id": orderData.id,
+    
+    // 🔴 YEH DONO LINES JOD DI HAIN (Kuch bina remove kiye)
+    "redirect": true,
+    "callback_url": window.location.origin + "/order-success/", 
 
-                    // Django CSRF Token ko safely hidden input se nikalne ka tarika
-                    const csrfToken = '{{ csrf_token }}';
+    "handler": function (razorpayResponse) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/order-success/'; 
 
-                    const fields = {
-                        'razorpay_payment_id': razorpayResponse.razorpay_payment_id,
-                        'razorpay_order_id': razorpayResponse.razorpay_order_id,
-                        'razorpay_signature': razorpayResponse.razorpay_signature,
-                        'csrfmiddlewaretoken': csrfToken
-                    };
+        // Django CSRF Token ko safely hidden input se nikalne ka tarika
+        const csrfToken = '{{ csrf_token }}';
 
-                    for (const key in fields) {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = key;
-                        input.value = fields[key];
-                        form.appendChild(input);
-                    }
+        const fields = {
+            'razorpay_payment_id': razorpayResponse.razorpay_payment_id,
+            'razorpay_order_id': razorpayResponse.razorpay_order_id,
+            'razorpay_signature': razorpayResponse.razorpay_signature,
+            'csrfmiddlewaretoken': csrfToken
+        };
 
-                    document.body.appendChild(form);
-                    form.submit();
-                },
-                "prefill": { 
-                    "name": name, 
-                    "contact": phone 
-                },
-                "theme": { 
-                    "color": "#2563eb" 
-                }
-                
-            };
+        for (const key in fields) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = fields[key];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    },
+    "prefill": { 
+        "name": name, 
+        "contact": phone 
+    },
+    "theme": { 
+        "color": "#2563eb" 
+    }
+};
 
             const rzp1 = new Razorpay(options);
             rzp1.open();
