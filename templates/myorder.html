@@ -193,6 +193,12 @@ const options = {
     "order_id": orderData.id,
     "handler": function (response) {
         // Payment success hone par ye form data backend ko jayega
+        // 1. Agar aap bina kisi backend verification ke direct test karna chahti hain:
+  callback_url:
+    "https://healthcare-plus-jup9.onrender.com/payment-success",
+
+  redirect: true
+};
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '/payment-handler/'; // Aapka backend URL

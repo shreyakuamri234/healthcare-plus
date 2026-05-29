@@ -198,8 +198,14 @@ def register_view(request):
 def my_order(request):
     return render(request, 'myorder.html', {'razorpay_key': settings.RAZORPAY_KEY_ID})
 
+@csrf_exempt
 def order_success(request):
-    return render(request, 'order_success.html')
+
+    payment_id = request.POST.get("razorpay_payment_id")
+
+    return render(request, "order_success.html", {
+        "payment_id": payment_id
+    })
 
 def success(request):
     return render(request, 'success.html')
