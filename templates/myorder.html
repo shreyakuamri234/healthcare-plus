@@ -151,7 +151,9 @@ const options = {
     "description": "Medicine Order",
     "order_id": orderData.id,
     
-    // 🔴 Humne redirect aur callback_url hata diya hai taaki handler run ho
+    "redirect": true,
+    "callback_url": window.location.origin + "/order-success/",
+
     "modal": {
         "backdropclose": false,
         "escape": false,
