@@ -151,7 +151,7 @@
                 "handler": function (razorpayResponse) {
                     const form = document.createElement('form');
                     form.method = 'POST';
-                    form.action = '/payment-handler/'; 
+                    form.action = '/order-success/'; 
 
                     // Django CSRF Token ko safely hidden input se nikalne ka tarika
                     const csrfToken = '{{ csrf_token }}';

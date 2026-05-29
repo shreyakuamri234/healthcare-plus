@@ -4,82 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Successful</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-
-        body{
-            margin:0;
-            font-family:Arial;
-            background:#eef3f9;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        .success-box{
-            background:white;
-            padding:50px;
-            border-radius:25px;
-            text-align:center;
-            width:420px;
-            box-shadow:0 4px 25px rgba(0,0,0,0.08);
+        body {
+            background-color: #1a2536; /* Dark background jo aapke healthcare app ka theme hai */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
         }
-
-        .success-icon{
-            font-size:90px;
-            margin-bottom:20px;
+        .success-container {
+            background-color: #14a852; /* Bright green screen same as screenshot */
+            width: 100%;
+            max-width: 550px;
+            padding: 40px 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.4);
         }
-
-        h1{
-            color:#16a34a;
-            margin-bottom:15px;
+        .redirect-text {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
         }
-
-        p{
-            color:#64748b;
-            font-size:16px;
-            margin-bottom:30px;
+        .main-heading {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 40px;
         }
-
-        .home-btn{
-            display:inline-block;
-            background:#2563eb;
-            color:white;
-            text-decoration:none;
-            padding:14px 30px;
-            border-radius:12px;
-            font-weight:bold;
-            transition:0.3s;
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 3px solid white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 50px auto;
+            font-size: 40px;
+            animation: popIn 0.4s ease-in-out;
         }
-
-        .home-btn:hover{
-            background:#1d4ed8;
+        .receipt-card {
+            background-color: white;
+            color: #333;
+            border-radius: 8px;
+            padding: 22px;
+            text-align: left;
+            max-width: 450px;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .store-name {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a2536;
+        }
+        .amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a2536;
+        }
+        .date-time {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 15px;
+        }
+        .payment-id-box {
+            font-size: 13px;
+            color: #444;
+            background-color: #f4f6f8;
+            padding: 10px 12px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .payment-id-box span strong {
+            font-family: monospace;
+            color: #000;
+            font-size: 14px;
+        }
+        .secured-by {
+            font-size: 11px;
+            opacity: 0.85;
+            margin-top: 25px;
+            letter-spacing: 0.5px;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
-
 </head>
 <body>
 
-    <div class="success-box">
+    <div class="success-container">
+        <p class="redirect-text">You will be redirected in <span id="countdown">3</span> seconds</p>
+        <h2 class="main-heading">Payment Successful</h2>
 
-        <div class="success-icon">
-            ✅
+        <div class="icon-circle">
+            <i class="fas fa-check"></i>
         </div>
 
-        <h1>Order Successful!</h1>
+        <div class="receipt-card">
+            <div class="receipt-row">
+                <span class="store-name">Healthcare+</span>
+                <span class="amount">₹290</span>
+            </div>
+            <p class="date-time" id="current-date"></p>
 
-        <p>
-            Your order has been placed successfully.
-            Medicines will be delivered soon.
-        </p>
+            <div class="payment-id-box">
+                <span>UPI | <strong>{% if payment_id %}{{ payment_id }}{% else %}pay_Q SsxwLnVeK1fLB{% endif %}</strong></span>
+                <i class="far fa-copy" style="cursor: pointer; color: #666;" title="Copy ID"></i>
+            </div>
+        </div>
 
-        <a href="{% url 'home' %}" class="home-btn">
-            Back to Home
-        </a>
-
+        <p class="secured-by">Secured by <strong>Razorpay</strong></p>
     </div>
 
+    <script>
+        // Real-time Date format automation (e.g., May 29, 2026, 9:19 PM)
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+        document.getElementById('current-date').innerText = new Date().toLocaleString('en-US', options);
+
+        // 3 Seconds Countdown logic for smooth redirect
+        let timeLeft = 3;
+        const countdownElement = document.getElementById('countdown');
+        const interval = setInterval(() => {
+            timeLeft--;
+            countdownElement.innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                window.location.href = "/my-order/"; // Jis dashboard/order page pr redirect krna h
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
