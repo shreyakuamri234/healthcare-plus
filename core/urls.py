@@ -32,4 +32,6 @@ urlpatterns = [
     path('book-appointment/', views.book_appointment, name='book_appointment'),
     path('membership/', views.buy_membership, name='membership'),
     path('health/', views.health, name='health'),
+    path('map/', views.map, name='map'),
+
 ]

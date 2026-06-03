@@ -222,3 +222,6 @@ def buy_membership(request):
 def health(request):
     return render(request, 'health.html')
 
+def map(request):
+    return render(request, 'map.html')
+
