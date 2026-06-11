@@ -225,3 +225,9 @@ def health(request):
 def map(request):
     return render(request, 'map.html')
 
+def booking_success(request, appointment_id):
+    # Database se us specific appointment ka data nikalna jo abhi book hua hai
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+    
+    # HTML page par data bhejna
+    return render(request, 'success.html', {'appointment': appointment})
