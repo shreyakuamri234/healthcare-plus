@@ -121,22 +121,11 @@
         .btn-primary:hover {
             background-color: #2563eb;
         }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: #4b5563;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-secondary:hover {
-            background-color: #f3f4f6;
-        }
     </style>
 </head>
 <body>
 
     <div class="success-card">
-        <!-- Success Green Tick Icon -->
         <div class="icon-container">
             <svg viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -144,34 +133,44 @@
         </div>
 
         <h1>Appointment Booked!</h1>
-        <p class="subtitle">Aapka appointment successfully confirm ho gaya hai. Details niche di gayi hain.</p>
+        <p class="subtitle">Aapka appointment successfully confirm ho gaya hai.</p>
 
-        <!-- Appointment Details -->
+        <!-- Dynamic Appointment Details -->
         <div class="details-box">
             <div class="detail-row">
-                <span class="label">Booking ID:</span>
-                <span class="value">#APT-98241</span>
+                <span class="label">Doctor Name:</span>
+                <span class="value" id="docName">Loading...</span>
             </div>
             <div class="detail-row">
                 <span class="label">Date:</span>
-                <span class="value">15 June, 2026</span>
+                <span class="value" id="appDate">Loading...</span>
             </div>
             <div class="detail-row">
-                <span class="label">Time:</span>
-                <span class="value">11:30 AM</span>
-            </div>
-            <div class="detail-row">
-                <span class="label">Doctor/Expert:</span>
-                <span class="value">Dr. Anjali Sharma</span>
+                <span class="label">Time Slot:</span>
+                <span class="value" id="appTime">Loading...</span>
             </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="btn-group">
-            <a href="#" class="btn btn-primary">Go to Dashboard</a>
-            <a href="#" class="btn btn-secondary">Download Receipt</a>
+            <a href="/" class="btn btn-primary">Go to Home</a>
         </div>
     </div>
+
+    <!-- JavaScript to catch URL parameters -->
+    <script>
+        // URL se data nikalne ka function
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Parameters ko fields me set karna
+        const doctor = urlParams.get('doctor') || 'Not Specified';
+        const date = urlParams.get('date') || 'Not Specified';
+        const time = urlParams.get('time') || 'Not Specified';
+
+        // HTML elements me values display karna
+        document.getElementById('docName').innerText = decodeURIComponent(doctor);
+        document.getElementById('appDate').innerText = decodeURIComponent(date);
+        document.getElementById('appTime').innerText = decodeURIComponent(time);
+    </script>
 
 </body>
 </html>
