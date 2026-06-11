@@ -164,7 +164,7 @@ def book_appointment(request):
             date=request.POST.get('date'),
             time=request.POST.get('time')
         )
-        return redirect('order_success')
+        return redirect('success')
     return render(request, 'finddoctors.html')
 
 @csrf_exempt
