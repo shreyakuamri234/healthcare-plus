@@ -63,37 +63,7 @@
         p.subtitle {
             color: #6b7280;
             font-size: 15px;
-            margin-bottom: 25px;
-        }
-
-        .details-box {
-            background-color: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: left;
             margin-bottom: 30px;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .detail-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .label {
-            color: #9ca3af;
-            font-weight: 500;
-        }
-
-        .value {
-            color: #374151;
-            font-weight: 600;
         }
 
         .btn-group {
@@ -110,6 +80,7 @@
             text-decoration: none;
             transition: all 0.2s ease;
             cursor: pointer;
+            text-align: center;
         }
 
         .btn-primary {
@@ -132,45 +103,13 @@
             </svg>
         </div>
 
-        <h1>Appointment Booked!</h1>
+        <h1>Booking Successful!</h1>
         <p class="subtitle">Aapka appointment successfully confirm ho gaya hai.</p>
 
-        <!-- Dynamic Appointment Details -->
-        <div class="details-box">
-            <div class="detail-row">
-                <span class="label">Doctor Name:</span>
-                <span class="value" id="docName">Loading...</span>
-            </div>
-            <div class="detail-row">
-                <span class="label">Date:</span>
-                <span class="value" id="appDate">Loading...</span>
-            </div>
-            <div class="detail-row">
-                <span class="label">Time Slot:</span>
-                <span class="value" id="appTime">Loading...</span>
-            </div>
-        </div>
-
         <div class="btn-group">
-            <a href="/" class="btn btn-primary">Go to Home</a>
+            <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book Another Appointment</a>
         </div>
     </div>
-
-    <!-- JavaScript to catch URL parameters -->
-    <script>
-        // URL se data nikalne ka function
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        // Parameters ko fields me set karna
-        const doctor = urlParams.get('doctor') || 'Not Specified';
-        const date = urlParams.get('date') || 'Not Specified';
-        const time = urlParams.get('time') || 'Not Specified';
-
-        // HTML elements me values display karna
-        document.getElementById('docName').innerText = decodeURIComponent(doctor);
-        document.getElementById('appDate').innerText = decodeURIComponent(date);
-        document.getElementById('appTime').innerText = decodeURIComponent(time);
-    </script>
 
 </body>
 </html>

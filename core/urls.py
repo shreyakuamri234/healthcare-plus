@@ -29,9 +29,9 @@ urlpatterns = [
     # --- Lab Tests & Appointments ---
     path('lab-test/', views.add_lab_test, name='lab_test'),
     path('place-lab-order/', views.place_lab_order, name='place_lab_order'),
-    path('booking-success/<int:appointment_id>/', views.booking_success, name='booking_success'),
+    path('book-appointment/', views.book_appointment, name='book_appointment'),
     path('membership/', views.buy_membership, name='membership'),
     path('health/', views.health, name='health'),
-    path('map/', views.map, name='map'),
+    
 
 ]
