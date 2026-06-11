@@ -1,613 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Appointment Confirmed | HealthCare+</title>
-    <!-- Google Fonts & simple reset for clean, modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 (free icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Successful</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #e0f2fe 0%, #d9f0ec 100%);
-            min-height: 100vh;
+            background-color: #f3f4f6;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
         }
 
-        /* main card container */
         .success-card {
-            max-width: 860px;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 2rem;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            transition: transform 0.2s ease;
-        }
-
-        .success-card:hover {
-            transform: scale(1.01);
-        }
-
-        /* header section with illustration style */
-        .hero-section {
-            background: linear-gradient(112deg, #0f2b3d 0%, #1b4f6e 100%);
-            padding: 2rem 2rem 2rem 2rem;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             text-align: center;
-            position: relative;
+            max-width: 450px;
+            width: 100%;
+            animation: fadeIn 0.6s ease-out;
         }
 
-        .check-animation {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #2ad18b;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-container {
             width: 80px;
             height: 80px;
+            background-color: #e6f7ed;
             border-radius: 50%;
-            margin-bottom: 1rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .check-animation i {
-            font-size: 3.2rem;
-            color: white;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-        }
-
-        .hero-section h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.3px;
-            margin-bottom: 0.5rem;
-        }
-
-        .hero-section .subhead {
-            color: rgba(255,255,255,0.85);
-            font-size: 1rem;
-            font-weight: 500;
-            max-width: 80%;
-            margin: 0 auto;
-        }
-
-        /* content body */
-        .details-container {
-            padding: 2rem 2rem 1.8rem 2rem;
-        }
-
-        /* appointment info panel */
-        .info-panel {
-            background-color: #f8fafc;
-            border-radius: 1.5rem;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 1.8rem;
-            border: 1px solid #e2edf2;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-
-        .info-row {
             display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px dashed #dce7ed;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
         }
 
-        .info-row:last-child {
-            border-bottom: none;
+        .icon-container svg {
+            width: 45px;
+            height: 45px;
+            fill: #22c55e;
+        }
+
+        h1 {
+            color: #1f2937;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .details-box {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .detail-row:last-child {
             margin-bottom: 0;
-            padding-bottom: 0;
         }
 
-        .info-icon {
-            width: 32px;
-            color: #1b6b8f;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: #1e2f3e;
-            min-width: 110px;
-            font-size: 0.9rem;
-        }
-
-        .info-value {
-            color: #1f3b4c;
+        .label {
+            color: #9ca3af;
             font-weight: 500;
-            background: white;
-            padding: 0.2rem 0.8rem;
-            border-radius: 40px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.95rem;
-            flex-wrap: wrap;
         }
 
-        .badge-confirmed {
-            background-color: #e2f6e9;
-            color: #147d4a;
+        .value {
+            color: #374151;
             font-weight: 600;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.7rem;
-            border-radius: 50px;
-            margin-left: 0.5rem;
-            letter-spacing: 0.3px;
         }
 
-        .highlight-text {
-            background: #eef2ff;
-            border-radius: 12px;
-            padding: 0.25rem 0.6rem;
-            font-weight: 600;
-            color: #085e7b;
-        }
-
-        /* card grid for next steps */
-        .next-steps {
-            margin-top: 1.2rem;
-            margin-bottom: 1.8rem;
-        }
-
-        .next-steps h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1d3e53;
-            margin-bottom: 1rem;
+        .btn-group {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .steps-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: space-between;
-        }
-
-        .step-item {
-            flex: 1;
-            min-width: 160px;
-            background: #ffffff;
-            border-radius: 1rem;
-            padding: 0.9rem;
-            border: 1px solid #e0edf2;
-            text-align: center;
-            transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        }
-
-        .step-item i {
-            font-size: 1.8rem;
-            color: #2b8c6e;
-            margin-bottom: 0.5rem;
-            display: inline-block;
-        }
-
-        .step-item h4 {
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-            color: #1c4e6c;
-        }
-
-        .step-item p {
-            font-size: 0.75rem;
-            color: #5f7f92;
-        }
-
-        /* action buttons */
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 0.8rem 1.6rem;
-            border-radius: 60px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 600;
-            font-size: 0.9rem;
+            text-decoration: none;
             transition: all 0.2s ease;
             cursor: pointer;
-            border: none;
-            background: none;
-            font-family: inherit;
-            text-decoration: none;
         }
 
         .btn-primary {
-            background-color: #1b6b8f;
+            background-color: #3b82f6;
             color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: none;
         }
 
         .btn-primary:hover {
-            background-color: #0f5575;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            background-color: #2563eb;
         }
 
-        .btn-outline {
-            border: 1px solid #bfd9e4;
-            background: white;
-            color: #1b6b8f;
+        .btn-secondary {
+            background-color: transparent;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
         }
 
-        .btn-outline:hover {
-            background-color: #f1f9fe;
-            border-color: #8bbacf;
-        }
-
-        .btn-outline i {
-            font-size: 0.9rem;
-        }
-
-        /* footer note */
-        .footer-note {
-            background: #f9fefc;
-            border-top: 1px solid #d9eaf0;
-            padding: 1rem 2rem;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #5a7e92;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .footer-note a {
-            color: #19647e;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .footer-note a:hover {
-            text-decoration: underline;
-        }
-
-        /* responsive touches */
-        @media (max-width: 640px) {
-            .hero-section h1 {
-                font-size: 1.5rem;
-            }
-            .details-container {
-                padding: 1.5rem;
-            }
-            .info-row {
-                flex-direction: column;
-                gap: 0.2rem;
-            }
-            .info-icon {
-                width: auto;
-            }
-            .info-label {
-                min-width: auto;
-            }
-            .action-buttons {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .btn {
-                justify-content: center;
-            }
-            .footer-note {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        /* pulse effect for checkmark */
-        @keyframes gentlePop {
-            0% { transform: scale(0.8); opacity: 0; }
-            80% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .check-animation {
-            animation: gentlePop 0.5s ease-out;
+        .btn-secondary:hover {
+            background-color: #f3f4f6;
         }
     </style>
 </head>
 <body>
 
-<div class="success-card">
-    <!-- Hero with success animation -->
-    <div class="hero-section">
-        <div class="check-animation">
-            <i class="fas fa-check-circle"></i>
+    <div class="success-card">
+        <!-- Success Green Tick Icon -->
+        <div class="icon-container">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
         </div>
-        <h1>Appointment Confirmed!</h1>
-        <div class="subhead">Your healthcare journey starts here — we're ready for you.</div>
-    </div>
 
-    <!-- Main content -->
-    <div class="details-container">
-        <!-- dynamic / mock appointment details (this would be replaced with dynamic data, but shows realistic info) -->
-        <div class="info-panel">
-            <div class="info-row">
-                <div class="info-icon"><i class="fas fa-calendar-alt"></i></div>
-                <div class="info-label">Appointment Date & Time</div>
-                <div class="info-value">
-                    <i class="far fa-clock"></i> Thursday, May 22, 2026 · 10:30 AM
-                    <span class="badge-confirmed">CONFIRMED</span>
-                </div>
+        <h1>Appointment Booked!</h1>
+        <p class="subtitle">Aapka appointment successfully confirm ho gaya hai. Details niche di gayi hain.</p>
+
+        <!-- Appointment Details -->
+        <div class="details-box">
+            <div class="detail-row">
+                <span class="label">Booking ID:</span>
+                <span class="value">#APT-98241</span>
             </div>
-            <div class="info-row">
-                <div class="info-icon"><i class="fas fa-user-md"></i></div>
-                <div class="info-label">Healthcare Provider</div>
-                <div class="info-value">
-                    <i class="fas fa-stethoscope"></i> Dr. Emily Hartman (Internal Medicine)
-                </div>
+            <div class="detail-row">
+                <span class="label">Date:</span>
+                <span class="value">15 June, 2026</span>
             </div>
-            <div class="info-row">
-                <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
-                <div class="info-label">Location</div>
-                <div class="info-value">
-                    <i class="fas fa-building"></i> HealthCare+ Main Clinic - Suite 300<br>
-                    <span style="font-size:0.8rem; margin-left: 1.4rem;">482 Wellness Ave, Downtown Metropolis</span>
-                </div>
+            <div class="detail-row">
+                <span class="label">Time:</span>
+                <span class="value">11:30 AM</span>
             </div>
-            <div class="info-row">
-                <div class="info-icon"><i class="fas fa-hashtag"></i></div>
-                <div class="info-label">Appointment ID</div>
-                <div class="info-value">
-                    <span class="highlight-text">#HC-2784-9G2D</span>
-                </div>
-            </div>
-            <div class="info-row">
-                <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
-                <div class="info-label">Need help?</div>
-                <div class="info-value">
-                    <i class="fas fa-headset"></i> Call Support: <strong>+1 (888) 765-4321</strong> (24/7)
-                </div>
+            <div class="detail-row">
+                <span class="label">Doctor/Expert:</span>
+                <span class="value">Dr. Anjali Sharma</span>
             </div>
         </div>
 
-        <!-- next steps / what to expect: engaging and helpful -->
-        <div class="next-steps">
-            <h3><i class="fas fa-list-check"></i> Next steps & preparation</h3>
-            <div class="steps-grid">
-                <div class="step-item">
-                    <i class="fas fa-envelope-open-text"></i>
-                    <h4>Check your email</h4>
-                    <p>We've sent calendar invite + pre-visit forms to your registered email.</p>
-                </div>
-                <div class="step-item">
-                    <i class="fas fa-id-card"></i>
-                    <h4>What to bring</h4>
-                    <p>Photo ID, insurance card, and list of current medications.</p>
-                </div>
-                <div class="step-item">
-                    <i class="fas fa-video"></i>
-                    <h4>Virtual option?</h4>
-                    <p>For telehealth, click the link in SMS reminder 10 mins before.</p>
-                </div>
-                <div class="step-item">
-                    <i class="fas fa-clock"></i>
-                    <h4>Arrive early</h4>
-                    <p>Please arrive 15 minutes early for check-in & paperwork.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Action buttons: add to calendar, reschedule, dashboard, etc -->
-        <div class="action-buttons">
-            <a href="#" class="btn btn-outline" id="addToCalendarBtn">
-                <i class="far fa-calendar-plus"></i> Add to Calendar
-            </a>
-            <a href="#" class="btn btn-outline" id="rescheduleBtn">
-                <i class="fas fa-exchange-alt"></i> Reschedule / Cancel
-            </a>
-            <a href="#" class="btn btn-primary" id="dashboardBtn">
-                <i class="fas fa-chalkboard-user"></i> Go to Dashboard
-            </a>
-        </div>
-
-        <!-- subtle note about reminders -->
-        <div style="margin-top: 1.4rem; font-size: 0.75rem; text-align: center; color: #568ba3;">
-            <i class="fas fa-bell"></i> SMS & email reminders will be sent 24h and 2h before your appointment.
+        <!-- Action Buttons -->
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary">Go to Dashboard</a>
+            <a href="#" class="btn btn-secondary">Download Receipt</a>
         </div>
     </div>
 
-    <!-- footer with links and help -->
-    <div class="footer-note">
-        <span><i class="far fa-copyright"></i> 2026 HealthCare+ — secure platform</span>
-        <span><i class="fas fa-shield-alt"></i> Your privacy is protected</span>
-        <a href="#" id="helpCenterLink"><i class="fas fa-life-ring"></i> Help center</a>
-    </div>
-</div>
-
-<!-- Optional: simple interactive alerts to simulate smooth UX (just demo feedback) 
-     Nothing critical but enhances demo realism -->
-<script>
-    (function() {
-        // For demo purposes: show an alert for buttons to emulate meaningful actions
-        // In a real implementation these would redirect to actual pages or perform API calls.
-        const addBtn = document.getElementById('addToCalendarBtn');
-        const rescheduleBtn = document.getElementById('rescheduleBtn');
-        const dashboardBtn = document.getElementById('dashboardBtn');
-        const helpLink = document.getElementById('helpCenterLink');
-
-        if (addBtn) {
-            addBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                // gentle simulation: generate a dummy .ics data to demonstrate "add to calendar" user feedback
-                // We'll show a success toast/modal style confirmation with a more realistic approach.
-                // For better user experience, we can create an .ics file download or simply alert.
-                // Here we will use a modern-looking alert that shows the event details.
-                // but since it's demo, we'll trigger a smart notification:
-                showFloatingMessage("📅 Appointment added to your calendar! (Demo: event saved locally)", "#2b8c6e");
-                // Optionally we could create a mock ics file, but for simplicity we show message.
-                // Simulating download callback: 
-                // If we wanted real .ics:
-                const eventTitle = "Appointment with Dr. Emily Hartman";
-                const startDate = "20260522T103000"; // Year Month Day T hour minute second
-                const endDate = "20260522T113000";
-                const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//HealthCare+//Appointment Success//EN
-BEGIN:VEVENT
-UID:${Date.now()}@healthcareplus.com
-DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-DTSTART:${startDate}
-DTEND:${endDate}
-SUMMARY:${eventTitle}
-LOCATION:HealthCare+ Main Clinic - Suite 300, 482 Wellness Ave
-DESCRIPTION:Appointment with Dr. Emily Hartman. Appointment ID: #HC-2784-9G2D. Please bring ID and insurance.
-END:VEVENT
-END:VCALENDAR`;
-                // to make it more realistic but not auto download on each click? we can optionally give download but for brevity we show message.
-                // user can click additional confirm? But we show a styled alert.
-                // we will also optionally trigger download? I'll implement download for better demo success.
-                const blob = new Blob([icsContent], {type: 'text/calendar'});
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'healthcare_appointment.ics';
-                // but this will cause download without permission? It's fine for demo, but we combine with preventDefault and a small confirm?
-                // Better: show a friendly confirm and then download.
-                if (confirm("Would you like to download the .ics calendar file to add to your preferred calendar (Outlook, Google Calendar, Apple Calendar)?")) {
-                    link.click();
-                    URL.revokeObjectURL(link.href);
-                    showFloatingMessage("✅ Calendar file downloaded. Open to add event.", "#147d4a");
-                } else {
-                    showFloatingMessage("You can add details manually using appointment ID.", "#568ba3");
-                }
-            });
-        }
-
-        if (rescheduleBtn) {
-            rescheduleBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                // In real scenario redirect to reschedule flow
-                showFloatingMessage("🔁 Rescheduling options — redirecting to appointment manager (demo).", "#1b6b8f");
-                setTimeout(() => {
-                    window.location.href = "#"; // placeholder (no actual redirect but shows demo)
-                    alert("Demo: In production, you would manage your booking here.");
-                }, 300);
-            });
-        }
-        
-        if (dashboardBtn) {
-            dashboardBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                showFloatingMessage("📊 Taking you to your personal dashboard... (demo)", "#0f5575");
-                setTimeout(() => {
-                    alert("✨ HealthCare+ Dashboard: view all appointments, medical records, prescriptions (simulated).");
-                }, 200);
-            });
-        }
-
-        if (helpLink) {
-            helpLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                showFloatingMessage("📞 Support center: Call +1 (888) 765-4321 or email help@healthcareplus.com (demo)", "#19647e");
-            });
-        }
-
-        // utility to show non-intrusive floating message (like a toast)
-        function showFloatingMessage(msg, bgColor = "#1b6b8f") {
-            // remove existing toast if present
-            const existingToast = document.querySelector('.custom-success-toast');
-            if(existingToast) existingToast.remove();
-            
-            const toast = document.createElement('div');
-            toast.className = 'custom-success-toast';
-            toast.innerText = msg;
-            toast.style.position = 'fixed';
-            toast.style.bottom = '30px';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.backgroundColor = bgColor;
-            toast.style.color = 'white';
-            toast.style.padding = '12px 24px';
-            toast.style.borderRadius = '50px';
-            toast.style.fontSize = '0.85rem';
-            toast.style.fontWeight = '500';
-            toast.style.boxShadow = '0 10px 20px rgba(0,0,0,0.2)';
-            toast.style.zIndex = '9999';
-            toast.style.backdropFilter = 'blur(2px)';
-            toast.style.fontFamily = "'Inter', sans-serif";
-            toast.style.maxWidth = '85%';
-            toast.style.textAlign = 'center';
-            toast.style.pointerEvents = 'none';
-            toast.style.transition = 'opacity 0.2s';
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => {
-                    if(toast.parentNode) toast.remove();
-                }, 300);
-            }, 2800);
-        }
-
-        // Additional: mark button smooth hover and small dynamic detail
-        // Also we could display the time dynamically but it's static for demo
-        console.log("HealthCare+ success page ready - appointment confirmed");
-        
-        // optional: If there are URL parameters to update appointment info, we could read them,
-        // but since it's a static success page, example data is present. Enhance: greeting message or something
-        // Simulate personalized greeting  (optional)
-        const visitorName = "Guest";  // could be replaced
-        const greetingSpan = document.createElement('span');
-        // not needed but add subtle congrats 
-        const subheadDiv = document.querySelector('.subhead');
-        if(subheadDiv && !subheadDiv.innerHTML.includes('Thank you')) {
-            // fine
-        }
-    })();
-</script>
-<!-- Additional style for toast -->
-<style>
-    .custom-success-toast {
-        transition: opacity 0.2s ease-in-out;
-        white-space: nowrap;
-        font-weight: 500;
-        letter-spacing: 0.2px;
-        pointer-events: none;
-        z-index: 10000;
-    }
-    @media (max-width: 600px) {
-        .custom-success-toast {
-            white-space: normal;
-            width: 90%;
-            font-size: 0.75rem;
-            padding: 10px 16px;
-        }
-    }
-    .btn {
-        cursor: pointer;
-    }
-    .btn-outline:active, .btn-primary:active {
-        transform: scale(0.97);
-    }
-</style>
 </body>
 </html>
